@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "oidc" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:team-sufra/web:ref:refs/heads/master"]
+      values   = ["repo:${var.repo_path}"]
     }
   }
 }
@@ -58,10 +58,6 @@ data "aws_iam_policy_document" "deploy_web" {
       aws_cloudfront_distribution.static_site.arn
     ]
   }
-}
-
-data "aws_route53_zone" "sufra_co_uk_hosted_zone" {
-  name = "sufra.co.uk"
 }
 
 data "aws_iam_openid_connect_provider" "github" {
