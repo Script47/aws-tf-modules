@@ -20,21 +20,21 @@ variable "minimum_protocol_version" {
 }
 
 variable "role_name" {
-  type = string
+  type        = string
   description = "The name of the role and policy with the ability to deploy"
-  default = "deploy-static-site"
+  default     = "deploy-static-site"
 }
 
 variable "restriction_type" {
-  type = string
+  type        = string
   description = "The restriction type for the CloudFront distribution"
-  default = "none"
+  default     = "none"
 }
 
 variable "locations" {
-  type = list(string)
+  type        = list(string)
   description = "The locations for the restriction type"
-  default = []
+  default     = []
 }
 
 variable "tags" {

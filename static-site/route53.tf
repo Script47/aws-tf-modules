@@ -12,4 +12,6 @@ resource "aws_route53_record" "static_site_a_record" {
     zone_id                = aws_cloudfront_distribution.static_site.hosted_zone_id
     evaluate_target_health = false
   }
+
+  provider = aws.default
 }

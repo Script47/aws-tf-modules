@@ -51,7 +51,9 @@ resource "aws_cloudfront_distribution" "static_site" {
     error_caching_min_ttl = 0
   }
 
-  tags = var.tags
+  tags     = var.tags
+  provider = aws.default
+
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {
@@ -60,6 +62,8 @@ resource "aws_cloudfront_origin_access_control" "oac" {
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
+  provider                          = aws.default
+
 }
 
 resource "aws_cloudfront_response_headers_policy" "cloudfront" {
@@ -87,4 +91,6 @@ resource "aws_cloudfront_response_headers_policy" "cloudfront" {
       override                   = true
     }
   }
+
+  provider = aws.default
 }
