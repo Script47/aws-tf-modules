@@ -25,6 +25,18 @@ variable "role_name" {
   default = "deploy-static-site"
 }
 
+variable "restriction_type" {
+  type = string
+  description = "The restriction type for the CloudFront distribution"
+  default = "none"
+}
+
+variable "locations" {
+  type = list(string)
+  description = "The locations for the restriction type"
+  default = []
+}
+
 variable "tags" {
   type        = map(string)
   description = "The tags to apply to all resources created"

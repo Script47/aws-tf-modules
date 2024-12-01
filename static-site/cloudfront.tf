@@ -13,8 +13,8 @@ resource "aws_cloudfront_distribution" "static_site" {
 
   restrictions {
     geo_restriction {
-      restriction_type = "none"
-      locations        = []
+      restriction_type = var.restriction_type
+      locations        = var.locations
     }
   }
 
