@@ -4,7 +4,7 @@
 
 ### 01 Dec, 2024
 
-- Added variables for CloudFront restrictions types
+- Added config for CloudFront restrictions
 
 ## v0.0.1
 
