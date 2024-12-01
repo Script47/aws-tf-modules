@@ -3,11 +3,6 @@ variable "bucket_name" {
   description = "The name of the bucket which will hold your static site"
 }
 
-variable "hosted_zone_id" {
-  type        = string
-  description = "The hosted zone ID to attach the A record for your custom domain"
-}
-
 variable "domain_name" {
   type        = string
   description = "The custom domain for your CloudFront distribution"

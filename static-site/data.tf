@@ -60,6 +60,10 @@ data "aws_iam_policy_document" "deploy_web" {
   }
 }
 
+data "aws_route53_zone" "hosted_zone" {
+  name = var.domain_name
+}
+
 data "aws_iam_openid_connect_provider" "github" {
   url = "https://token.actions.githubusercontent.com"
 }
