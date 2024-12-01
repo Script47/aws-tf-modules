@@ -62,6 +62,7 @@ data "aws_iam_policy_document" "deploy_web" {
 
 data "aws_route53_zone" "hosted_zone" {
   name = var.domain_name
+  private_zone = false
 }
 
 data "aws_iam_openid_connect_provider" "github" {
