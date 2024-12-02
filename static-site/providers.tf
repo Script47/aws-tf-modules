@@ -1,7 +1,11 @@
-provider "aws" {
-  alias = "acm"
-}
-
-provider "aws" {
-  alias = "default"
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      configuration_aliases = [
+        aws.acm,
+        aws.default,
+      ]      
+    }
+  }
 }
