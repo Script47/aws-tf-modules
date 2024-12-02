@@ -8,36 +8,46 @@ variable "domain_name" {
   description = "The custom domain for your CloudFront distribution"
 }
 
-variable "minimum_protocol_version" {
-  type        = string
-  description = "Set the minimum viewer certificate version for the CloudFront distribution"
-  default     = "TLSv1.2_2021"
-}
-
 variable "role_name" {
   type        = string
   description = "The name of the role and policy with the ability to deploy"
   default     = "deploy-static-site"
 }
 
-variable "restriction_type" {
-  type        = string
-  description = "The restriction type for the CloudFront distribution"
-  default     = "none"
+variable "repo" {
+  type = string
+  description = "The repo path for the project"
 }
 
-variable "locations" {
-  type        = list(string)
-  description = "The locations for the restriction type"
-  default     = []
+variable "cloudfront" {
+  type = object({
+    aliases = list(string)
+
+    restriction = object({
+      type = string
+      locations = list(string)
+    })
+
+    viewer_certificate = object({
+      minimum_protocol_version = string
+    })
+  })
+
+  default = {
+    aliases = [var.domain_name]
+
+    restriction = {
+      type = "none"
+      locations = []
+    }
+
+    viewer_certificate = {
+      minimum_protocol_version = "TLSv1.2_2021"
+    }
+  }
 }
 
 variable "tags" {
   type        = map(string)
   description = "The tags to apply to all resources created"
-}
-
-variable "repo_path" {
-  type = string
-  description = "The repo path for the project"
 }

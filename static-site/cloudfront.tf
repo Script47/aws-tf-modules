@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "static_site" {
   comment             = "Distribution for ${var.domain_name}"
-  aliases             = [var.domain_name]
+  aliases             = var.cloudfront.aliases
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
@@ -13,8 +13,8 @@ resource "aws_cloudfront_distribution" "static_site" {
 
   restrictions {
     geo_restriction {
-      restriction_type = var.restriction_type
-      locations        = var.locations
+      restriction_type = var.cloudfront.type
+      locations        = var.cloudfront.locations
     }
   }
 
@@ -39,7 +39,7 @@ resource "aws_cloudfront_distribution" "static_site" {
   viewer_certificate {
     acm_certificate_arn            = aws_acm_certificate.cloudfront_cert.arn
     ssl_support_method             = "sni-only"
-    minimum_protocol_version       = var.minimum_protocol_version
+    minimum_protocol_version       = var.cloudfront.viewer_certificate.minimum_protocol_version
     cloudfront_default_certificate = false
   }
 
