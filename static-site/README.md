@@ -36,6 +36,11 @@ module "static_site" {
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
+  tags = {
+    Project = "my-project"
+    Service = "my-service"
+  }
+
   providers = {
     aws.default = aws
     aws.acm     = aws.useast1
