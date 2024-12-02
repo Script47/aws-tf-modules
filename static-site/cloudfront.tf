@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "static_site" {
   comment             = "Distribution for ${var.domain_name}"
-  aliases             = var.cloudfront.aliases
+  aliases             = local.aliases
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"

@@ -21,8 +21,6 @@ variable "repo" {
 
 variable "cloudfront" {
   type = object({
-    aliases = list(string)
-
     restriction = object({
       type = string
       locations = list(string)
@@ -32,10 +30,8 @@ variable "cloudfront" {
       minimum_protocol_version = string
     })
   })
-
+  description = "The configuration for the CloudFront distribution"
   default = {
-    aliases = [var.domain_name]
-
     restriction = {
       type = "none"
       locations = []
