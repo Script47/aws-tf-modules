@@ -28,8 +28,8 @@ module "static_site" {
   repo        = "example-org/web:ref:refs/heads/master"
 
   restriction = {
-    type      = string
-    locations = list(string)
+    type      = "none"
+    locations = []
   }
 
   viewer_certificate = {
