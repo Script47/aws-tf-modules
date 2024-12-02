@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "static_site" {
   }
 }
 
-data "aws_iam_policy_document" "deploy_web" {
+data "aws_iam_policy_document" "deploy_static_site" {
   statement {
     actions = [
       "s3:ListBucket",
