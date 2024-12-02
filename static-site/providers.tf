@@ -5,7 +5,7 @@ terraform {
       configuration_aliases = [
         aws.acm,
         aws.default,
-      ]      
+      ]
     }
   }
 }

@@ -51,9 +51,9 @@ resource "aws_cloudfront_distribution" "static_site" {
     error_caching_min_ttl = 0
   }
 
-  tags     = var.tags
-  provider = aws.default
-
+  tags       = var.tags
+  depends_on = [aws_acm_certificate_validation.cloudfront_cert_validation]
+  provider   = aws.default
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {

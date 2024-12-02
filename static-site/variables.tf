@@ -15,26 +15,26 @@ variable "role_name" {
 }
 
 variable "repo" {
-  type = string
+  type        = string
   description = "The repo path for the project"
 }
 
 variable "cloudfront" {
   type = object({
     restriction = optional(object({
-      type = string
+      type      = string
       locations = list(string)
-    }), 
-    {
-      type = "none"
-      locations = []
+      }),
+      {
+        type      = "none"
+        locations = []
     })
 
     viewer_certificate = optional(object({
       minimum_protocol_version = string
-    }),
-    {
-      minimum_protocol_version = "TLSv1.2_2021"
+      }),
+      {
+        minimum_protocol_version = "TLSv1.2_2021"
     })
   })
   description = "The configuration for the CloudFront distribution"
