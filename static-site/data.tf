@@ -1,3 +1,12 @@
+data "aws_route53_zone" "hosted_zone" {
+  name         = var.domain_name
+  private_zone = false
+}
+
+data "aws_iam_openid_connect_provider" "github" {
+  url = "https://token.actions.githubusercontent.com"
+}
+
 data "aws_iam_policy_document" "oidc" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -58,13 +67,4 @@ data "aws_iam_policy_document" "deploy_static_site" {
       aws_cloudfront_distribution.static_site.arn
     ]
   }
-}
-
-data "aws_route53_zone" "hosted_zone" {
-  name = var.domain_name
-  private_zone = false
-}
-
-data "aws_iam_openid_connect_provider" "github" {
-  url = "https://token.actions.githubusercontent.com"
 }
