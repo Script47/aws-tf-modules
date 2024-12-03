@@ -1,22 +1,22 @@
 variable "bucket_name" {
   type        = string
-  description = "The name of the bucket which will hold your static site"
+  description = "The name of the bucket that will store your static site files"
 }
 
 variable "domain_name" {
   type        = string
-  description = "The custom domain for your CloudFront distribution"
+  description = "The custom domain name for your CloudFront distribution"
 }
 
 variable "role_name" {
   type        = string
-  description = "The name of the role and policy with the ability to deploy"
+  description = "The name of the role and policy that will enable deployment through pipelines"
   default     = "deploy-static-site"
 }
 
 variable "repo" {
   type        = string
-  description = "The repo path for the project"
+  description = "The repo path for your project"
 }
 
 variable "cloudfront" {
@@ -37,7 +37,7 @@ variable "cloudfront" {
         minimum_protocol_version = "TLSv1.2_2021"
     })
   })
-  description = "The configuration for the CloudFront distribution"
+  description = "Additional configuration options for the CloudFront distribution"
 }
 
 variable "tags" {

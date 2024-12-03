@@ -63,7 +63,6 @@ resource "aws_cloudfront_origin_access_control" "oac" {
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
   provider                          = aws.default
-
 }
 
 resource "aws_cloudfront_response_headers_policy" "cloudfront" {
@@ -71,6 +70,10 @@ resource "aws_cloudfront_response_headers_policy" "cloudfront" {
   comment = "Response headers policy for ${var.domain_name}"
 
   security_headers_config {
+    content_type_options {
+      override = true
+    }
+
     frame_options {
       frame_option = "DENY"
       override     = true
@@ -79,10 +82,6 @@ resource "aws_cloudfront_response_headers_policy" "cloudfront" {
     referrer_policy {
       referrer_policy = "strict-origin"
       override        = true
-    }
-
-    content_type_options {
-      override = true
     }
 
     strict_transport_security {
