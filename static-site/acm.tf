@@ -5,10 +5,6 @@ resource "aws_acm_certificate" "cloudfront_cert" {
   validation_method = "DNS"
   tags              = var.tags
   provider          = aws.acm
-
-  lifecycle {
-    prevent_destroy = local.setup_custom_domain ? false : true
-  }
 }
 
 resource "aws_acm_certificate_validation" "cloudfront_cert_validation" {
@@ -17,8 +13,4 @@ resource "aws_acm_certificate_validation" "cloudfront_cert_validation" {
   certificate_arn         = aws_acm_certificate.cloudfront_cert[0].arn
   validation_record_fqdns = [for record in aws_route53_record.acm_records : record.fqdn]
   provider                = aws.acm
-
-  lifecycle {
-    prevent_destroy = local.setup_custom_domain ? false : true
-  }
 }
