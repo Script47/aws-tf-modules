@@ -40,7 +40,7 @@ resource "aws_cloudfront_distribution" "static_site" {
     acm_certificate_arn            = local.setup_custom_domain ? aws_acm_certificate.cloudfront_cert[0].arn : null
     ssl_support_method             = "sni-only"
     minimum_protocol_version       = local.setup_custom_domain ? var.cloudfront.viewer_certificate.minimum_protocol_version : null
-    cloudfront_default_certificate = local.setup_custom_domain ? false : true
+    cloudfront_default_certificate = !local.setup_custom_domain
   }
 
   # For SPAs this is needed for hard refresh on dynamic routes
@@ -51,8 +51,9 @@ resource "aws_cloudfront_distribution" "static_site" {
     error_caching_min_ttl = 0
   }
 
-  tags     = var.tags
-  provider = aws.default
+  tags       = var.tags
+  depends_on = [aws_acm_certificate.cloudfront_cert]
+  provider   = aws.default
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {
