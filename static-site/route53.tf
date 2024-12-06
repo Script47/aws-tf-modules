@@ -3,7 +3,7 @@
 #############################################
 
 resource "aws_route53_record" "acm_records" {
-  for_each = local.setup_custom_domain ? {
+  for_each = local.setup_custom_domain && data.aws_route53_zone.hosted_zone.name != null ? {
     for dvo in aws_acm_certificate.cloudfront_cert[0].domain_validation_options : dvo.domain_name => {
       type   = dvo.resource_record_type
       name   = dvo.resource_record_name
