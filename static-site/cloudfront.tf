@@ -38,7 +38,7 @@ resource "aws_cloudfront_distribution" "static_site" {
 
   viewer_certificate {
     # acm_certificate_arn            = local.setup_custom_domain ? aws_acm_certificate.cloudfront_cert[0].arn : null
-    acm_certificate_arn            = aws_acm_certificate.cloudfront_cert[0].arn
+    acm_certificate_arn            = join("", aws_acm_certificate.cloudfront_cert[*].arn)
     ssl_support_method             = "sni-only"
     minimum_protocol_version       = local.setup_custom_domain ? var.cloudfront.viewer_certificate.minimum_protocol_version : null
     cloudfront_default_certificate = !local.setup_custom_domain
