@@ -17,7 +17,12 @@ resource "aws_route53_record" "acm_records" {
   records         = [each.value.record]
   ttl             = 60
   allow_overwrite = true
-  provider        = aws.default
+
+  lifecycle {
+    prevent_destroy = local.setup_custom_domain ? false : true
+  }
+
+  provider = aws.default
 }
 
 #############################################
@@ -35,6 +40,10 @@ resource "aws_route53_record" "static_site_a_record" {
     name                   = aws_cloudfront_distribution.static_site.domain_name
     zone_id                = aws_cloudfront_distribution.static_site.hosted_zone_id
     evaluate_target_health = false
+  }
+
+  lifecycle {
+    prevent_destroy = local.setup_custom_domain ? false : true
   }
 
   provider = aws.default
