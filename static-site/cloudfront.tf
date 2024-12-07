@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "static_site" {
   comment             = "Distribution for ${var.domain_name}"
-  aliases             = local.aliases
+  aliases             = local.setup_custom_domain ? local.aliases : []
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
@@ -37,10 +37,11 @@ resource "aws_cloudfront_distribution" "static_site" {
   }
 
   viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.cloudfront_cert.arn
+    # acm_certificate_arn            = local.setup_custom_domain ? aws_acm_certificate.cloudfront_cert[0].arn : null
+    acm_certificate_arn            = join("", aws_acm_certificate.cloudfront_cert[*].arn)
     ssl_support_method             = "sni-only"
-    minimum_protocol_version       = var.cloudfront.viewer_certificate.minimum_protocol_version
-    cloudfront_default_certificate = false
+    minimum_protocol_version       = local.setup_custom_domain ? var.cloudfront.viewer_certificate.minimum_protocol_version : null
+    cloudfront_default_certificate = !local.setup_custom_domain
   }
 
   # For SPAs this is needed for hard refresh on dynamic routes
@@ -52,7 +53,7 @@ resource "aws_cloudfront_distribution" "static_site" {
   }
 
   tags       = var.tags
-  depends_on = [aws_acm_certificate_validation.cloudfront_cert_validation]
+  depends_on = [aws_acm_certificate.cloudfront_cert]
   provider   = aws.default
 }
 

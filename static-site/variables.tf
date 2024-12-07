@@ -6,6 +6,7 @@ variable "bucket_name" {
 variable "domain_name" {
   type        = string
   description = "The custom domain name for your CloudFront distribution"
+  default     = ""
 }
 
 variable "role_name" {

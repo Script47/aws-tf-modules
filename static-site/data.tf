@@ -1,4 +1,6 @@
 data "aws_route53_zone" "hosted_zone" {
+  count = local.setup_custom_domain ? 1 : 0
+
   name         = var.domain_name
   private_zone = false
 }

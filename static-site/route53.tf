@@ -3,16 +3,16 @@
 #############################################
 
 resource "aws_route53_record" "acm_records" {
-  for_each = {
-    for dvo in aws_acm_certificate.cloudfront_cert.domain_validation_options : dvo.domain_name => {
+  for_each = local.setup_custom_domain ? {
+    for dvo in aws_acm_certificate.cloudfront_cert[0].domain_validation_options : dvo.domain_name => {
+      type   = dvo.resource_record_type
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
-      type   = dvo.resource_record_type
     }
-  }
+  } : {}
 
+  zone_id         = data.aws_route53_zone.hosted_zone[0].zone_id
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.hosted_zone.zone_id
   name            = each.value.name
   records         = [each.value.record]
   ttl             = 60
@@ -25,7 +25,9 @@ resource "aws_route53_record" "acm_records" {
 #############################################
 
 resource "aws_route53_record" "static_site_a_record" {
-  zone_id = data.aws_route53_zone.hosted_zone.zone_id
+  count = local.setup_custom_domain ? 1 : 0
+
+  zone_id = data.aws_route53_zone.hosted_zone[0].zone_id
   name    = var.domain_name
   type    = "A"
 
