@@ -18,11 +18,20 @@ variable "role_name" {
   type        = string
   description = "The name of the role and policy that will enable deployment through pipelines"
   default     = "deploy-static-site"
+  validation {
+    condition     = !(var.setup_cd && (var.role_name == null || var.role_name == ""))
+    error_message = "role_name must be set if CD is being setup"
+  }
 }
 
 variable "repo" {
   type        = string
   description = "The repo path for your project"
+  default     = null
+  validation {
+    condition     = !(var.setup_cd && (var.repo == null || var.repo == ""))
+    error_message = "repo must be set if CD is being setup"
+  }
 }
 
 variable "cloudfront" {
