@@ -27,6 +27,7 @@ module "static_site" {
   domain_name  = "example.org"
   role_name    = "deploy-example-org"
   repo         = "example-org/repo:ref:refs/heads/master"
+  setup_cd     = false
 
   restriction = {
     type      = "none"

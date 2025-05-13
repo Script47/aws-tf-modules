@@ -28,25 +28,31 @@ variable "repo" {
 variable "cloudfront" {
   type = object({
     restriction = optional(object({
-      type      = string
+      type = string
       locations = list(string)
-      }),
+    }),
       {
-        type      = "none"
+        type = "none"
         locations = []
-    })
+      })
 
     viewer_certificate = optional(object({
       minimum_protocol_version = string
-      }),
+    }),
       {
         minimum_protocol_version = "TLSv1.2_2021"
-    })
+      })
   })
   description = "Additional configuration options for the CloudFront distribution"
 }
 
+variable "setup_cd" {
+  type        = bool
+  description = "Whether to create OIDC/IAM roles/policies needed to deploy via GitHub Actions"
+  default     = true
+}
+
 variable "tags" {
-  type        = map(string)
+  type = map(string)
   description = "The tags to apply to all resources created"
 }

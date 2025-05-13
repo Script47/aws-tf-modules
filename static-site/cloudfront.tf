@@ -23,7 +23,7 @@ resource "aws_cloudfront_distribution" "static_site" {
     response_headers_policy_id = aws_cloudfront_response_headers_policy.cloudfront.id
 
     allowed_methods = ["GET", "HEAD"]
-    cached_methods  = ["GET", "HEAD"]
+    cached_methods = ["GET", "HEAD"]
 
     forwarded_values {
       query_string = false
@@ -51,9 +51,9 @@ resource "aws_cloudfront_distribution" "static_site" {
     error_caching_min_ttl = 0
   }
 
-  tags       = var.tags
+  tags     = var.tags
   depends_on = [aws_acm_certificate_validation.cloudfront_cert_validation]
-  provider   = aws.default
+  provider = aws.default
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {

@@ -18,7 +18,7 @@ resource "aws_route53_record" "acm_records" {
   }
 
   type            = each.value.type
-  zone_id         = local.create_hosted_zone ? aws_route53_hosted_zone.hosted_zone[0].zone_id : data.aws_route53_zone[0].hosted_zone.zone_id
+  zone_id         = local.create_hosted_zone ? aws_route53_hosted_zone.hosted_zone[0].zone_id : data.aws_route53_zone.hosted_zone[0].zone_id
   name            = each.value.name
   records         = [each.value.record]
   ttl             = 60
@@ -31,7 +31,7 @@ resource "aws_route53_record" "acm_records" {
 #############################################
 
 resource "aws_route53_record" "static_site_a_record" {
-  zone_id = local.create_hosted_zone ? aws_route53_hosted_zone.hosted_zone[0].zone_id : data.aws_route53_zone[0].hosted_zone.zone_id
+  zone_id = local.create_hosted_zone ? aws_route53_hosted_zone.hosted_zone[0].zone_id : data.aws_route53_zone.hosted_zone[0].zone_id
   name    = var.domain_name
   type    = "A"
 
