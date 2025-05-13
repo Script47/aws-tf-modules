@@ -14,7 +14,7 @@ resource "aws_iam_role" "deploy_static_site" {
 resource "aws_iam_policy" "deploy_static_site" {
   count    = var.setup_cd ? 1 : 0
   name     = var.role_name
-  policy   = data.aws_iam_policy_document.deploy_static_site.json
+  policy   = data.aws_iam_policy_document.deploy_static_site[0].json
   tags     = var.tags
   provider = aws.default
 }
