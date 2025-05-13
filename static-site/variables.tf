@@ -3,6 +3,12 @@ variable "bucket_name" {
   description = "The name of the bucket that will store your static site files"
 }
 
+variable "hosted_zone" {
+  type        = string
+  description = "The name of the hosted zone. If omitted, a hosted zone based on the domain name will be created"
+  default     = ""
+}
+
 variable "domain_name" {
   type        = string
   description = "The custom domain name for your CloudFront distribution"

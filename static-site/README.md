@@ -14,7 +14,7 @@ This module enables you to set up a static site/SPA on AWS with the following fe
 
 ## Assumptions
 
-This module assumes you have an existing hosted zone for the static site domain and GitHub OIDC setup.
+This module assumes you have GitHub OIDC setup.
 
 ## Usage
 
@@ -22,10 +22,11 @@ This module assumes you have an existing hosted zone for the static site domain 
 module "static_site" {
   source = "github.com/Script47/aws-tf-modules/static-site"
 
-  bucket_name = "example.org"
-  domain_name = "example.org"
-  role_name   = "deploy-example-org"
-  repo        = "example-org/web:ref:refs/heads/master"
+  bucket_name  = "example.org"
+  hosted_zone  = "my-hosted_zone"
+  domain_name  = "example.org"
+  role_name    = "deploy-example-org"
+  repo         = "example-org/repo:ref:refs/heads/master"
 
   restriction = {
     type      = "none"
@@ -37,8 +38,9 @@ module "static_site" {
   }
 
   tags = {
-    Project = "my-project"
-    Service = "my-service"
+    Project     = "my-project"
+    Service     = "my-service"
+    Environment = "prod"
   }
 
   providers = {
