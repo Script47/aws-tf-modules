@@ -3,7 +3,7 @@ output "bucket_name" {
 }
 
 output "deploy_role_arn" {
-    value = var.setup_cd ? aws_iam_role.deploy_static_site.arn : null
+    value = var.setup_cd ? aws_iam_role.deploy_static_site[0].arn : null
 }
 
 output "cloudfront" {
