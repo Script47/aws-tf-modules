@@ -35,7 +35,7 @@ variable "repo" {
 }
 
 variable "cloudfront" {
-  type = optional(object({
+  type = object({
     restriction = optional(object({
       type = string
       locations = list(string)
@@ -51,7 +51,16 @@ variable "cloudfront" {
       {
         minimum_protocol_version = "TLSv1.2_2021"
       })
-  }))
+  })
+  default = {
+    restriction = {
+      type = "none"
+      locations = []
+    }
+    viewer_certificate = {
+      minimum_protocol_version = "TLSv1.2_2021"
+    }
+  }
   description = "Additional configuration options for the CloudFront distribution"
 }
 
