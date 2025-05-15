@@ -1,6 +1,7 @@
 variable "bucket_name" {
   type        = string
-  description = "The name of the bucket that will store your static site files"
+  description = "The name of the bucket that will store your static site files. If omitted the bucket name will match the domain name"
+  default = ""
 }
 
 variable "hosted_zone" {
