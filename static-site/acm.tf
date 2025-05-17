@@ -1,8 +1,9 @@
 resource "aws_acm_certificate" "cloudfront_cert" {
-  domain_name       = var.domain_name
-  validation_method = "DNS"
-  tags              = var.tags
-  provider          = aws.acm
+  domain_name               = local.primary_domain
+  subject_alternative_names = local.domains
+  validation_method         = "DNS"
+  tags                      = var.tags
+  provider                  = aws.acm
 }
 
 resource "aws_acm_certificate_validation" "cloudfront_cert_validation" {

@@ -10,9 +10,13 @@ variable "hosted_zone" {
   default     = ""
 }
 
-variable "domain_name" {
-  type        = string
-  description = "The custom domain name for your CloudFront distribution"
+variable "domains" {
+  type        = list(string)
+  description = "List of custom domain names for your CloudFront distribution. The first domain specified will be classed as the primary domain (used as S3 bucket name, Route53 hosted zone name etc.)"
+  validation {
+    condition     = length(var.domains) > 0
+    error_message = "domains requires at least one domain to be specified"
+  }
 }
 
 variable "role_name" {
