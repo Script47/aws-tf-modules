@@ -11,10 +11,10 @@ variable "hosted_zone" {
 }
 
 variable "domains" {
-  type        = list(string)
-  description = "List of custom domain names for your CloudFront distribution. The first domain specified will be classed as the primary domain (used as the bucket name)"
+  type = list(string)
+  description = "List of custom domain names for your CloudFront distribution. The first domain specified will be classed as the primary domain (used as S3 bucket name, Route53 hosted zone name etc.)"
   validation {
-    condition = length(var.domains) > 0
+    condition     = length(var.domains) > 0
     error_message = "domains requires at least one domain to be specified"
   }
 }
@@ -42,24 +42,24 @@ variable "repo" {
 variable "cloudfront" {
   type = object({
     restriction = optional(object({
-      type      = string
+      type = string
       locations = list(string)
-      }),
+    }),
       {
-        type      = "none"
+        type = "none"
         locations = []
-    })
+      })
 
     viewer_certificate = optional(object({
       minimum_protocol_version = string
-      }),
+    }),
       {
         minimum_protocol_version = "TLSv1.2_2021"
-    })
+      })
   })
   default = {
     restriction = {
-      type      = "none"
+      type = "none"
       locations = []
     }
     viewer_certificate = {
@@ -76,6 +76,6 @@ variable "setup_cd" {
 }
 
 variable "tags" {
-  type        = map(string)
+  type = map(string)
   description = "The tags to apply to all resources created"
 }
