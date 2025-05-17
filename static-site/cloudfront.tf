@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "static_site" {
-  comment             = "Distribution for ${var.domain_name}"
-  aliases             = local.aliases
+  comment             = "Distribution for ${local.primary_domain}"
+  aliases             = local.domains
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
@@ -23,7 +23,7 @@ resource "aws_cloudfront_distribution" "static_site" {
     response_headers_policy_id = aws_cloudfront_response_headers_policy.cloudfront.id
 
     allowed_methods = ["GET", "HEAD"]
-    cached_methods  = ["GET", "HEAD"]
+    cached_methods = ["GET", "HEAD"]
 
     forwarded_values {
       query_string = false
@@ -51,9 +51,9 @@ resource "aws_cloudfront_distribution" "static_site" {
     error_caching_min_ttl = 0
   }
 
-  tags       = var.tags
+  tags     = var.tags
   depends_on = [aws_acm_certificate_validation.cloudfront_cert_validation]
-  provider   = aws.default
+  provider = aws.default
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {
@@ -67,7 +67,7 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 
 resource "aws_cloudfront_response_headers_policy" "cloudfront" {
   name    = "cloudfront-response-headers-policy"
-  comment = "Response headers policy for ${var.domain_name}"
+  comment = "Response headers policy for ${local.primary_domain}"
 
   security_headers_config {
     content_type_options {

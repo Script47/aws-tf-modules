@@ -19,13 +19,15 @@ toggle to disable this.
 
 ## Usage
 
+See `variables.tf` for the full argument reference.
+
 ```hcl
 module "static_site" {
   source = "github.com/Script47/aws-tf-modules/static-site"
 
+  domains = ["example.org"]
   bucket_name = "example.org"
   hosted_zone = "my-hosted_zone"
-  domain_name = "example.org"
   role_name   = "deploy-example-org"
   repo        = "example-org/repo:ref:refs/heads/master"
   setup_cd    = false
