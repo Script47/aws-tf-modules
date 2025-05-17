@@ -1,19 +1,23 @@
 data "aws_route53_zone" "hosted_zone" {
-  name         = var.domain_name
+  count        = local.create_hosted_zone ? 0 : 1
+  name         = var.hosted_zone
   private_zone = false
 }
 
 data "aws_iam_openid_connect_provider" "github" {
-  url = "https://token.actions.githubusercontent.com"
+  count = var.setup_cd ? 1 : 0
+  url   = "https://token.actions.githubusercontent.com"
 }
 
 data "aws_iam_policy_document" "oidc" {
+  count = var.setup_cd ? 1 : 0
+
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
     principals {
       type        = "Federated"
-      identifiers = [data.aws_iam_openid_connect_provider.github.arn]
+      identifiers = [data.aws_iam_openid_connect_provider.github[0].arn]
     }
 
     condition {
@@ -29,7 +33,6 @@ data "aws_iam_policy_document" "oidc" {
     }
   }
 }
-
 
 data "aws_iam_policy_document" "static_site" {
   statement {
@@ -52,6 +55,8 @@ data "aws_iam_policy_document" "static_site" {
 }
 
 data "aws_iam_policy_document" "deploy_static_site" {
+  count = var.setup_cd ? 1 : 0
+
   statement {
     actions = [
       "s3:ListBucket",
@@ -59,11 +64,19 @@ data "aws_iam_policy_document" "deploy_static_site" {
       "s3:GetObject",
       "s3:PutObject",
       "s3:DeleteObject",
-      "cloudfront:CreateInvalidation"
     ]
     resources = [
       aws_s3_bucket.static_site.arn,
       "${aws_s3_bucket.static_site.arn}/*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "cloudfront:CreateInvalidation"
+    ]
+
+    resources = [
       aws_cloudfront_distribution.static_site.arn
     ]
   }
