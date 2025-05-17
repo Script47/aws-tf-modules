@@ -1,7 +1,7 @@
 variable "bucket_name" {
   type        = string
   description = "The name of the bucket that will store your static site files. If omitted the bucket name will match the domain name"
-  default = ""
+  default     = ""
 }
 
 variable "hosted_zone" {
@@ -38,24 +38,24 @@ variable "repo" {
 variable "cloudfront" {
   type = object({
     restriction = optional(object({
-      type = string
+      type      = string
       locations = list(string)
-    }),
+      }),
       {
-        type = "none"
+        type      = "none"
         locations = []
-      })
+    })
 
     viewer_certificate = optional(object({
       minimum_protocol_version = string
-    }),
+      }),
       {
         minimum_protocol_version = "TLSv1.2_2021"
-      })
+    })
   })
   default = {
     restriction = {
-      type = "none"
+      type      = "none"
       locations = []
     }
     viewer_certificate = {
@@ -72,6 +72,6 @@ variable "setup_cd" {
 }
 
 variable "tags" {
-  type = map(string)
+  type        = map(string)
   description = "The tags to apply to all resources created"
 }

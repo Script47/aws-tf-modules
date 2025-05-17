@@ -7,14 +7,15 @@ This module enables you to set up a static site/SPA on AWS with the following fe
 - Custom domain with corresponding A record in the hosted zone and TLS certificate (DNS validated)
 - S3 bucket for hosting the static site
 - CloudFront distribution for site delivery
-  - OAC for secure access between CloudFront and S3
-  - Ensures only signed requests (SigV4) are allowed to S3
+    - OAC for secure access between CloudFront and S3
+    - Ensures only signed requests (SigV4) are allowed to S3
 - IAM role for CD (e.g., GitHub Actions)
 - Resource tagging for manageable resources
 
 ## Assumptions
 
-If you want to the module to setup IAM for CD then it assumes you have GitHub OIDC setup.
+This module assumes you have GitHub OIDC setup to use the CD features provided by the module. You can use the `setup_cd`
+toggle to disable this.
 
 ## Usage
 
@@ -22,15 +23,15 @@ If you want to the module to setup IAM for CD then it assumes you have GitHub OI
 module "static_site" {
   source = "github.com/Script47/aws-tf-modules/static-site"
 
-  bucket_name  = "example.org"
-  hosted_zone  = "my-hosted_zone"
-  domain_name  = "example.org"
-  role_name    = "deploy-example-org"
-  repo         = "example-org/repo:ref:refs/heads/master"
-  setup_cd     = false
+  bucket_name = "example.org"
+  hosted_zone = "my-hosted_zone"
+  domain_name = "example.org"
+  role_name   = "deploy-example-org"
+  repo        = "example-org/repo:ref:refs/heads/master"
+  setup_cd    = false
 
   restriction = {
-    type      = "none"
+    type = "none"
     locations = []
   }
 
