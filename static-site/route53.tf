@@ -1,6 +1,11 @@
+locals {
+  hosted_zone_id = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id :
+    data.aws_route53_zone.hosted_zone[0].zone_id
+}
+
 resource "aws_route53_zone" "hosted_zone" {
   count = local.create_hosted_zone ? 1 : 0
-  name  = var.domain_name
+  name  = local.primary_domain
   tags  = var.tags
 }
 
@@ -17,9 +22,9 @@ resource "aws_route53_record" "acm_records" {
   }
 
   type            = each.value.type
-  zone_id         = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id : data.aws_route53_zone.hosted_zone[0].zone_id
+  zone_id         = local.hosted_zone_id
   name            = each.value.name
-  records         = [each.value.record]
+  records = [each.value.record]
   ttl             = 60
   allow_overwrite = true
   provider        = aws.default
@@ -29,9 +34,11 @@ resource "aws_route53_record" "acm_records" {
 # Setup the A record for your custom domain
 #############################################
 resource "aws_route53_record" "static_site_a_record" {
-  zone_id = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id : data.aws_route53_zone.hosted_zone[0].zone_id
-  name    = var.domain_name
+  count = length(local.domains)
+
+  zone_id = local.hosted_zone_id
   type    = "A"
+  name    = local.domains[count.index]
 
   alias {
     name                   = aws_cloudfront_distribution.static_site.domain_name
