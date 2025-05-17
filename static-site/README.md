@@ -14,7 +14,7 @@ This module enables you to set up a static site/SPA on AWS with the following fe
 
 ## Assumptions
 
-This module assumes you have GitHub OIDC setup.
+If you want to the module to setup IAM for CD then it assumes you have GitHub OIDC setup.
 
 ## Usage
 
