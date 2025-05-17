@@ -1,8 +1,3 @@
-locals {
-  hosted_zone_id = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id :
-    data.aws_route53_zone.hosted_zone[0].zone_id
-}
-
 resource "aws_route53_zone" "hosted_zone" {
   count = local.create_hosted_zone ? 1 : 0
   name  = local.primary_domain
@@ -21,8 +16,9 @@ resource "aws_route53_record" "acm_records" {
     }
   }
 
-  type            = each.value.type
-  zone_id         = local.hosted_zone_id
+  type    = each.value.type
+  zone_id = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id :
+    data.aws_route53_zone.hosted_zone[0].zone_id
   name            = each.value.name
   records = [each.value.record]
   ttl             = 60
@@ -36,9 +32,10 @@ resource "aws_route53_record" "acm_records" {
 resource "aws_route53_record" "static_site_a_record" {
   count = length(local.domains)
 
-  zone_id = local.hosted_zone_id
-  type    = "A"
-  name    = local.domains[count.index]
+  zone_id = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id :
+    data.aws_route53_zone.hosted_zone[0].zone_id
+  type = "A"
+  name = local.domains[count.index]
 
   alias {
     name                   = aws_cloudfront_distribution.static_site.domain_name
