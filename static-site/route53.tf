@@ -16,9 +16,9 @@ resource "aws_route53_record" "acm_records" {
     }
   }
 
-  type    = each.value.type
-  zone_id = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id :
+  zone_id         = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id :
     data.aws_route53_zone.hosted_zone[0].zone_id
+  type            = each.value.type
   name            = each.value.name
   records = [each.value.record]
   ttl             = 60
