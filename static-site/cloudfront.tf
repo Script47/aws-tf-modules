@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "static_site" {
-  comment             = "Distribution for ${var.domain_name}"
-  aliases             = local.aliases
+  comment             = "Distribution for ${local.primary_domain}"
+  aliases             = local.domains
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
@@ -43,11 +43,17 @@ resource "aws_cloudfront_distribution" "static_site" {
     cloudfront_default_certificate = false
   }
 
-  # For SPAs this is needed for hard refresh on dynamic routes
   custom_error_response {
-    response_page_path    = "/index.html"
-    response_code         = 404
     error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
+  }
+
+  custom_error_response {
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
     error_caching_min_ttl = 0
   }
 
@@ -67,7 +73,7 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 
 resource "aws_cloudfront_response_headers_policy" "cloudfront" {
   name    = "cloudfront-response-headers-policy"
-  comment = "Response headers policy for ${var.domain_name}"
+  comment = "Response headers policy for ${local.primary_domain}"
 
   security_headers_config {
     content_type_options {

@@ -2,14 +2,15 @@
 
 ## About
 
-This module enables you to set up a static site/SPA on AWS with the following features:
+This module allows you to setup a static site with the following features:
 
-- Custom domain with corresponding A record in the hosted zone and TLS certificate (DNS validated)
-- S3 bucket for hosting the static site
-- CloudFront distribution for site delivery
-    - OAC for secure access between CloudFront and S3
-    - Ensures only signed requests (SigV4) are allowed to S3
-- IAM role for CD (e.g., GitHub Actions)
+- S3 bucket for static content (secure, private access only via CloudFront OAC)
+- CloudFront distribution with TLS certificate (ACM) and full domain aliasing
+  - Automatic DNS validation for ACM via Route 53
+  - Optional creation of Route 53 Hosted Zone (or reuse an existing one)
+  - Multi-domain support
+- CI/CD deploy IAM role via OIDC (optional)
+- Fallback support for SPA (`403 → 200 /index.html` and `404 → 200 /index.html`)
 - Resource tagging for manageable resources
 
 ## Assumptions
@@ -19,19 +20,21 @@ toggle to disable this.
 
 ## Usage
 
+See `variables.tf` for the full argument reference.
+
 ```hcl
 module "static_site" {
-  source = "github.com/Script47/aws-tf-modules/static-site"
+  source      = "github.com/Script47/aws-tf-modules/static-site"
 
+  domains     = ["example.org"]
   bucket_name = "example.org"
   hosted_zone = "my-hosted_zone"
-  domain_name = "example.org"
   role_name   = "deploy-example-org"
   repo        = "example-org/repo:ref:refs/heads/master"
   setup_cd    = false
 
   restriction = {
-    type = "none"
+    type      = "none"
     locations = []
   }
 
@@ -42,7 +45,7 @@ module "static_site" {
   tags = {
     Project     = "my-project"
     Service     = "my-service"
-    Environment = "prod"
+    Environment = "produdction"
   }
 
   providers = {
