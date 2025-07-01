@@ -2,7 +2,7 @@
 
 ## About
 
-This module enables you to set up a static site on AWS with the following features:
+This module allows you to setup a static site with the following features:
 
 - S3 bucket for static content (secure, private access only via CloudFront OAC)
 - CloudFront distribution with TLS certificate (ACM) and full domain aliasing
