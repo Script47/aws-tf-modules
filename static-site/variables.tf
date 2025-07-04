@@ -12,30 +12,10 @@ variable "hosted_zone" {
 
 variable "domains" {
   type        = list(string)
-  description = "List of custom domain names for your CloudFront distribution. The first domain specified will be classed as the primary domain (used as S3 bucket name, Route53 hosted zone name etc.)"
+  description = "List of domain names for your CloudFront distribution. The first domain specified will be classed as the primary domain (used as S3 bucket name, Route53 hosted zone name etc.)"
   validation {
     condition     = length(var.domains) > 0
     error_message = "domains requires at least one domain to be specified"
-  }
-}
-
-variable "role_name" {
-  type        = string
-  description = "The name of the role and policy that will enable deployment through pipelines"
-  default     = "deploy-static-site"
-  validation {
-    condition     = !(var.setup_cd && (var.role_name == null || var.role_name == ""))
-    error_message = "role_name must be set if CD is being setup"
-  }
-}
-
-variable "repo" {
-  type        = string
-  description = "The repo path for your project"
-  default     = null
-  validation {
-    condition     = !(var.setup_cd && (var.repo == null || var.repo == ""))
-    error_message = "repo must be set if CD is being setup"
   }
 }
 
@@ -67,12 +47,6 @@ variable "cloudfront" {
     }
   }
   description = "Additional configuration options for the CloudFront distribution"
-}
-
-variable "setup_cd" {
-  type        = bool
-  description = "Whether to create OIDC/IAM roles/policies needed to deploy via GitHub Actions"
-  default     = true
 }
 
 variable "tags" {
