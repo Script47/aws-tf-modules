@@ -5,8 +5,8 @@ variable "name" {
 
 variable "description" {
   type        = string
-  description = "The function's description"
   default     = ""
+  description = "The function's description"
 }
 
 variable "role_arn" {
@@ -16,38 +16,38 @@ variable "role_arn" {
 
 variable "runtime" {
   type        = string
-  description = "Lambda runtime environment identifier"
   default     = "nodejs22.x"
+  description = "Lambda runtime environment identifier"
 }
 
 variable "architectures" {
   type = list(string)
-  description = "A list of the supported architectures"
   default = ["arm64"]
+  description = "A list of the supported architectures"
 }
 
 variable "memory" {
   type        = number
-  description = "Allocated memory for the function"
   default     = 128
+  description = "Allocated memory for the function"
 }
 
 variable "timeout" {
   type        = number
-  description = "Lambda execution timeout in seconds"
   default     = 3
+  description = "Lambda execution timeout in seconds"
 }
 
 variable "concurrency" {
   type        = number
-  description = "Set the maximum execution concurrency"
   default     = -1
+  description = "Set the maximum execution concurrency"
 }
 
 variable "layer_arns" {
   type = list(string)
-  description = "ARN of layers"
   default = []
+  description = "ARN of layers"
 }
 
 variable "handler" {
@@ -57,8 +57,8 @@ variable "handler" {
 
 variable "vars" {
   type = map(string)
-  description = "Environment variables available to the function"
   default = {}
+  description = "Environment variables available to the function"
 }
 
 variable "cloudwatch" {

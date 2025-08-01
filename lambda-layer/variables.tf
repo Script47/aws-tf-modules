@@ -5,20 +5,20 @@ variable "name" {
 
 variable "description" {
   type        = string
-  description = "The description of the layer"
   default     = ""
+  description = "The description of the layer"
 }
 
 variable "architectures" {
   type = list(string)
-  description = "The compatible architectures"
   default = ["arm64"]
+  description = "The compatible architectures"
 }
 
 variable "runtimes" {
   type = list(string)
-  description = "The compatible runtimes"
   default = ["nodejs22.x"]
+  description = "The compatible runtimes"
 }
 
 variable "src" {
