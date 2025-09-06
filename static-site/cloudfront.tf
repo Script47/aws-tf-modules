@@ -72,7 +72,7 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 }
 
 resource "aws_cloudfront_response_headers_policy" "cloudfront" {
-  name    = "cloudfront-response-headers-policy"
+  name    = "cf-resp-hdrs-${local.primary_domain_normalised}"
   comment = "Response headers policy for ${local.primary_domain}"
 
   security_headers_config {
