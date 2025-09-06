@@ -18,7 +18,7 @@ See `variables.tf` for the full argument reference.
 
 ```hcl
 module "static_site" {
-  source      = "github.com/Script47/aws-tf-modules/static-site"
+  source      = "github.com/script47/aws-tf-modules/static-site"
 
   domains     = ["example.org"]
   bucket_name = "example.org"
