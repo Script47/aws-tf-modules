@@ -1,6 +1,6 @@
 resource "aws_iam_role_policy" "logging" {
   name = "allow-cloudwatch-logs-access"
-  role = var.role_arn
+  role = split("/", var.role_arn)[1]
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
