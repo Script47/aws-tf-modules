@@ -16,6 +16,6 @@ resource "aws_s3_bucket_public_access_block" "static_site" {
 
 resource "aws_s3_bucket_policy" "static_site_policy" {
   bucket   = aws_s3_bucket.static_site.bucket
-  policy   = data.aws_iam_policy_document.static_site.json
+  policy   = data.aws_iam_policy_document.cloudfront_to_s3.json
   provider = aws.default
 }

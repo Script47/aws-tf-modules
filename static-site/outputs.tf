@@ -12,9 +12,3 @@ output "cloudfront" {
     aliases     = aws_cloudfront_distribution.static_site.aliases
   }
 }
-
-output "role" {
-  value = var.setup_cd ? {
-    arn = aws_iam_role.deploy_static_site[0].arn
-  } : null
-}
