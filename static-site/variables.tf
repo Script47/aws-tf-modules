@@ -22,9 +22,8 @@ variable "domains" {
 variable "geo_restriction" {
   type = object({
     type      = optional(string, "none")
-    locations = list(string)
-    })
-
+    locations = optional(list(string), [])
+  })
   default = {
     type      = "none"
     locations = []
@@ -33,12 +32,9 @@ variable "geo_restriction" {
 }
 
 variable "viewer_certificate" {
-  type = optional(object({
-    minimum_protocol_version = "TLSv1.2_2025"
-    }), {
-    minimum_protocol_version = "TLSv1.2_2025"
+  type = object({
+    minimum_protocol_version = optional(string, "TLSv1.2_2025")
   })
-
   default = {
     minimum_protocol_version = "TLSv1.2_2025"
   }
