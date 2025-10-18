@@ -19,34 +19,26 @@ variable "domains" {
   }
 }
 
-variable "cloudfront" {
+variable "geo_restriction" {
   type = object({
-    restriction = optional(object({
-      type      = string
-      locations = list(string)
-      }),
-      {
-        type      = "none"
-        locations = []
-    })
-
-    viewer_certificate = optional(object({
-      minimum_protocol_version = string
-      }),
-      {
-        minimum_protocol_version = "TLSv1.2_2021"
-    })
+    type      = optional(string, "none")
+    locations = optional(list(string), [])
   })
   default = {
-    restriction = {
-      type      = "none"
-      locations = []
-    }
-    viewer_certificate = {
-      minimum_protocol_version = "TLSv1.2_2021"
-    }
+    type      = "none"
+    locations = []
   }
-  description = "Additional configuration options for the CloudFront distribution"
+  description = "GEO restriction configuration for the CloudFront distribution"
+}
+
+variable "viewer_certificate" {
+  type = object({
+    minimum_protocol_version = optional(string, "TLSv1.2_2025")
+  })
+  default = {
+    minimum_protocol_version = "TLSv1.2_2025"
+  }
+  description = "Viewer certificate configuration for the CloudFront distribution"
 }
 
 variable "tags" {

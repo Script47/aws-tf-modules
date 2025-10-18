@@ -24,13 +24,13 @@ module "static_site" {
   bucket_name = "example.org"
   hosted_zone = "my-hosted_zone"
 
-  restriction = {
+  geo_restriction = {
     type      = "none"
     locations = []
   }
 
   viewer_certificate = {
-    minimum_protocol_version = "TLSv1.2_2021"
+    minimum_protocol_version = "TLSv1.2_2025"
   }
 
   tags = {
