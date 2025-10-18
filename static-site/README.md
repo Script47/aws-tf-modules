@@ -30,7 +30,7 @@ module "static_site" {
   }
 
   viewer_certificate = {
-    minimum_protocol_version = "TLSv1.2_2021"
+    minimum_protocol_version = "TLSv1.2_2025"
   }
 
   tags = {
