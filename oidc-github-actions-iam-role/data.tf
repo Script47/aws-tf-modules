@@ -1,6 +1,5 @@
 data "aws_iam_openid_connect_provider" "github" {
   url      = "https://token.actions.githubusercontent.com"
-  provider = aws.default
 }
 
 data "aws_iam_policy_document" "assume_role_policy" {

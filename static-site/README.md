@@ -20,17 +20,17 @@ See `variables.tf` for the full argument reference.
 module "static_site" {
   source      = "github.com/script47/aws-tf-modules/static-site"
 
-  domains     = ["example.org"]
   bucket_name = "example.org"
-  hosted_zone = "my-hosted_zone"
+  hosted_zone = "my-hosted-zone"
+  domains     = ["example.org"]
 
-  restriction = {
+  geo_restriction = {
     type      = "none"
     locations = []
   }
 
   viewer_certificate = {
-    minimum_protocol_version = "TLSv1.2_2021"
+    minimum_protocol_version = "TLSv1.2_2025"
   }
 
   tags = {
