@@ -24,7 +24,7 @@ module "static_site" {
   bucket_name = "example.org"
   hosted_zone = "my-hosted_zone"
 
-  restriction = {
+  geo_restriction = {
     type      = "none"
     locations = []
   }
