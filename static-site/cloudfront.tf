@@ -23,13 +23,6 @@ resource "aws_cloudfront_distribution" "static_site" {
     domain_name              = aws_s3_bucket.static_site.bucket_regional_domain_name
     origin_id                = "S3-${aws_s3_bucket.static_site.bucket}"
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
-
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "https-only"
-      origin_ssl_protocols   = "TLSv1.2"
-    }
   }
 
   default_cache_behavior {
