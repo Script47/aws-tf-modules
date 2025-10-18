@@ -20,14 +20,10 @@ variable "domains" {
 }
 
 variable "geo_restriction" {
-  type = optional(object({
-    type      = string
+  type = object({
+    type      = optional(string, "none")
     locations = list(string)
-    }),
-    {
-      type      = "none"
-      locations = []
-  })
+    })
 
   default = {
     type      = "none"
