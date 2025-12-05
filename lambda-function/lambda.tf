@@ -30,10 +30,10 @@ resource "aws_lambda_function" "lambda" {
 resource "aws_lambda_permission" "permissions" {
   for_each = var.permissions
 
-  action        = each.value.action
   function_name = aws_lambda_function.lambda.function_name
-  principal     = each.value.principal
   statement_id  = each.key
+  principal     = each.value.principal
+  action        = each.value.action
   source_arn    = each.value.source_arn
 }
 
