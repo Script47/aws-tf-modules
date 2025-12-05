@@ -3,5 +3,4 @@ resource "aws_iam_openid_connect_provider" "github" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = var.thumbprints
   tags            = var.tags
-  provider        = aws.default
 }
