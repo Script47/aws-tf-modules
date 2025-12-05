@@ -1,3 +1,7 @@
+locals {
+  origin_id = "S3-${aws_s3_bucket.static_site.bucket}"
+}
+
 resource "aws_cloudfront_distribution" "static_site" {
   comment             = "Distribution for ${local.primary_domain}"
   aliases             = local.domains
@@ -5,21 +9,28 @@ resource "aws_cloudfront_distribution" "static_site" {
   is_ipv6_enabled     = true
   default_root_object = "index.html"
 
-  origin {
-    domain_name              = aws_s3_bucket.static_site.bucket_regional_domain_name
-    origin_id                = "S3-${aws_s3_bucket.static_site.bucket}"
-    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
+  viewer_certificate {
+    acm_certificate_arn            = aws_acm_certificate.cloudfront_cert.arn
+    ssl_support_method             = "sni-only"
+    minimum_protocol_version       = var.viewer_certificate.minimum_protocol_version
+    cloudfront_default_certificate = false
   }
 
   restrictions {
     geo_restriction {
-      restriction_type = var.cloudfront.restriction.type
-      locations        = var.cloudfront.restriction.locations
+      restriction_type = var.geo_restriction.type
+      locations        = var.geo_restriction.locations
     }
   }
 
+  origin {
+    origin_id                = local.origin_id
+    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
+    domain_name              = aws_s3_bucket.static_site.bucket_regional_domain_name
+  }
+
   default_cache_behavior {
-    target_origin_id           = "S3-${aws_s3_bucket.static_site.bucket}"
+    target_origin_id           = local.origin_id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.cloudfront.id
 
     allowed_methods = ["GET", "HEAD"]
@@ -34,13 +45,6 @@ resource "aws_cloudfront_distribution" "static_site" {
     }
 
     viewer_protocol_policy = "redirect-to-https"
-  }
-
-  viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.cloudfront_cert.arn
-    ssl_support_method             = "sni-only"
-    minimum_protocol_version       = var.cloudfront.viewer_certificate.minimum_protocol_version
-    cloudfront_default_certificate = false
   }
 
   custom_error_response {
@@ -72,7 +76,7 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 }
 
 resource "aws_cloudfront_response_headers_policy" "cloudfront" {
-  name    = "cloudfront-response-headers-policy"
+  name    = "cf-resp-hdrs-${local.primary_domain_normalised}"
   comment = "Response headers policy for ${local.primary_domain}"
 
   security_headers_config {

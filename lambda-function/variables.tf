@@ -16,7 +16,7 @@ variable "role_arn" {
 
 variable "runtime" {
   type        = string
-  default     = "nodejs22.x"
+  default     = "nodejs24.x"
   description = "Lambda runtime environment identifier"
 }
 
@@ -78,7 +78,7 @@ variable "src" {
 variable "async_invoke_config" {
   type = object({
     max_retries = optional(number, 2)
-    max_event_age = optional(number, 21600) # 6 hours
+    max_event_age = optional(number, 3600) # 1 hour
     failure_destination_arn = optional(string, null)
     success_destination_arn = optional(string, null)
   })
@@ -87,8 +87,8 @@ variable "async_invoke_config" {
 
 variable "permissions" {
   type = map(object({
-    principal = string
     action    = string
+    principal = string
     source_arn = optional(string, null)
   }))
   default = {}
