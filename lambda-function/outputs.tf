@@ -1,7 +1,7 @@
 output "lambda" {
   value = {
-    arn        = aws_lambda_function.lambda.arn
-    invoke_arn = aws_lambda_function.lambda.invoke_arn
+    arn        = aws_lambda_function.fn.arn
+    invoke_arn = aws_lambda_function.fn.invoke_arn
   }
 }
 
