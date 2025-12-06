@@ -21,8 +21,8 @@ variable "runtime" {
 }
 
 variable "architectures" {
-  type = list(string)
-  default = ["arm64"]
+  type        = list(string)
+  default     = ["arm64"]
   description = "A list of the supported architectures"
 }
 
@@ -45,8 +45,8 @@ variable "concurrency" {
 }
 
 variable "layer_arns" {
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "ARN of layers"
 }
 
@@ -56,18 +56,9 @@ variable "handler" {
 }
 
 variable "vars" {
-  type = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
   description = "Environment variables available to the function"
-}
-
-variable "cloudwatch" {
-  type = object({
-    app_log_level = optional(string, "INFO") # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
-    system_log_level = optional(string, "INFO") # DEBUG, INFO, WARN
-    retention_in_days = optional(number, 30)
-  })
-  default = {}
 }
 
 variable "src" {
@@ -75,10 +66,19 @@ variable "src" {
   description = "The path to your function code"
 }
 
+variable "logs" {
+  type = object({
+    app_log_level     = optional(string, "INFO") # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+    system_log_level  = optional(string, "INFO") # DEBUG, INFO, WARN
+    retention_in_days = optional(number, 30)
+  })
+  default = {}
+}
+
 variable "async_invoke_config" {
   type = object({
-    max_retries = optional(number, 2)
-    max_event_age = optional(number, 3600) # 1 hour
+    max_retries             = optional(number, 2)
+    max_event_age           = optional(number, 3600) # 1 hour
     failure_destination_arn = optional(string, null)
     success_destination_arn = optional(string, null)
   })
@@ -87,15 +87,15 @@ variable "async_invoke_config" {
 
 variable "permissions" {
   type = map(object({
-    action    = string
-    principal = string
+    action     = string
+    principal  = string
     source_arn = optional(string, null)
   }))
   default = {}
 }
 
 variable "tags" {
-  type = map(string)
+  type        = map(string)
   description = "The tags to apply to all resources created"
-  default = {}
+  default     = {}
 }
