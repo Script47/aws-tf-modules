@@ -1,8 +1,14 @@
+locals {
+  default_origin = one([
+    for o in var.origins : o if o.default
+  ])
+}
+
 resource "aws_cloudfront_distribution" "static_site" {
-  comment             = "Distribution for ${local.primary_domain}"
-  aliases             = local.domains
-  enabled             = true
-  is_ipv6_enabled     = true
+  comment         = "Distribution for ${local.primary_domain}"
+  aliases         = local.domains
+  enabled         = true
+  is_ipv6_enabled = true
 
   viewer_certificate {
     acm_certificate_arn            = aws_acm_certificate.cloudfront_cert.arn
@@ -42,45 +48,32 @@ resource "aws_cloudfront_distribution" "static_site" {
   }
 
   default_cache_behavior {
-    target_origin_id           = var.origin.id
-    viewer_protocol_policy     = "redirect-to-https"
-    response_headers_policy_id = aws_cloudfront_response_headers_policy.cloudfront.id
-    allowed_methods            = var.default_cache_behavior.allowed_methods
-    origin_request_policy_id   = var.default_cache_behavior.origin_request_policy_id    
-    cached_methods             = var.default_cache_behavior.cached_methods
-    cache_policy_id            = var.default_cache_behavior.cache_policy_id
+    target_origin_id         = local.default_origin["id"]
+    allowed_methods          = local.default_origin["allowed_methods"]
+    origin_request_policy_id = local.default_origin["origin_request_policy_id"]
+    cached_methods           = local.default_origin["cached_methods"]
+    cache_policy_id          = local.default_origin["cache_policy_id"]
+    viewer_protocol_policy   = "redirect-to-https"
+  }
+
+  dynamic "ordered_cache_behavior" {
+    for_each = {
+      for k, v in var.origins : k => v
+      if !v.default
+    }
+
+    content {
+      target_origin_id         = ordered_cache_behavior.value.id
+      path_pattern             = ordered_cache_behavior.value.path_pattern
+      allowed_methods          = ordered_cache_behavior.value.allowed_methods
+      origin_request_policy_id = ordered_cache_behavior.value.origin_request_policy_id
+      cached_methods           = ordered_cache_behavior.value.cached_methods
+      cache_policy_id          = ordered_cache_behavior.value.cache_policy_id
+      viewer_protocol_policy   = "redirect-to-https"
+    }
   }
 
   tags       = var.tags
   depends_on = [aws_acm_certificate_validation.cloudfront_cert_validation]
   provider   = aws.default
-}
-
-resource "aws_cloudfront_response_headers_policy" "cloudfront" {
-  name    = "cf-resp-hdrs-${local.primary_domain_normalised}"
-  comment = "Response headers policy for ${local.primary_domain}"
-
-  security_headers_config {
-    content_type_options {
-      override = true
-    }
-
-    frame_options {
-      frame_option = "DENY"
-      override     = true
-    }
-
-    referrer_policy {
-      referrer_policy = "strict-origin"
-      override        = true
-    }
-
-    strict_transport_security {
-      access_control_max_age_sec = 15768000
-      preload                    = false
-      override                   = true
-    }
-  }
-
-  provider = aws.default
 }
