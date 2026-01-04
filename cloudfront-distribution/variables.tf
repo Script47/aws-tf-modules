@@ -31,6 +31,29 @@ variable "viewer_certificate" {
   description = "Viewer certificate configuration for the CloudFront distribution"
 }
 
+variable "origins" {
+  type = object({
+    id                       = string
+    domain_name              = string
+    origin_access_control_id = optional(string, null)
+    origin_path              = optional(string, null)
+    http_port                = optional(number, 80)
+    https_port               = optional(number, 443)
+    ip_address_type          = optional(string, "dualstack")
+    origin_protocol_policy   = optional(string, "https-only")
+    origin_ssl_protocols     = optional(list(string), ["TLSv1.2"])
+  })
+}
+
+variable "default_cache_behavior" {
+  type = object({
+    allowed_methods          = list(string)
+    cached_methods           = list(string)
+    cache_policy_id          = optional(string, null)
+    origin_request_policy_id = optional(string, null)
+  })
+}
+
 variable "tags" {
   type        = map(string)
   description = "The tags to apply to all resources created"
