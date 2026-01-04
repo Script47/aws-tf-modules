@@ -2,6 +2,10 @@ locals {
   default_origin = one([
     for o in var.origins : o if o.default
   ])
+
+  non_default_origins = [
+    for o in var.origins : o if !o.default
+  ]
 }
 
 resource "aws_cloudfront_distribution" "static_site" {
@@ -57,18 +61,15 @@ resource "aws_cloudfront_distribution" "static_site" {
   }
 
   dynamic "ordered_cache_behavior" {
-    for_each = {
-      for k, v in var.origins : k => v
-      if !v.default
-    }
+    for_each = local.non_default_origins
 
     content {
-      target_origin_id         = ordered_cache_behavior.value.id
-      path_pattern             = ordered_cache_behavior.value.path_pattern
-      allowed_methods          = ordered_cache_behavior.value.allowed_methods
-      origin_request_policy_id = ordered_cache_behavior.value.origin_request_policy_id
-      cached_methods           = ordered_cache_behavior.value.cached_methods
-      cache_policy_id          = ordered_cache_behavior.value.cache_policy_id
+      target_origin_id         = ordered_cache_behavior.value["id"]
+      path_pattern             = ordered_cache_behavior.value["path_pattern"]
+      allowed_methods          = ordered_cache_behavior.value["allowed_methods"]
+      cached_methods           = ordered_cache_behavior.value["cached_methods"]
+      cache_policy_id          = ordered_cache_behavior.value["cache_policy_id"]
+      origin_request_policy_id = ordered_cache_behavior.value["origin_request_policy_id"]
       viewer_protocol_policy   = "redirect-to-https"
     }
   }
