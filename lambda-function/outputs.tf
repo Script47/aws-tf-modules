@@ -7,6 +7,6 @@ output "lambda" {
 
 output "cloudwatch" {
   value = {
-    arn = aws_cloudwatch_log_group.logs.arn
+    arn = length(aws_cloudwatch_log_group.logs) > 0 ? aws_cloudwatch_log_group.logs[0].arn : null
   }
 }
