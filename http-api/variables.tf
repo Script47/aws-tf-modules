@@ -6,6 +6,7 @@ variable "name" {
 variable "description" {
   type        = string
   description = "The description of the API"
+  default     = ""
 }
 
 variable "protocol" {
