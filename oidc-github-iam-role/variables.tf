@@ -14,22 +14,12 @@ variable "policy" {
   type        = string
   description = "The IAM role policy in JSON format"
   default     = null
-
-  validation {
-    condition     = var.policy != null || length(var.policy_arns) > 0
-    error_message = "policy or policy_arns must be provided"
-  }
 }
 
 variable "policy_arns" {
   type        = set(string)
   description = "Set of IAM policy ARNs to attach to the role"
-  default     = []
-
-  validation {
-    condition     = var.policy != null || length(var.policy_arns) > 0
-    error_message = "policy or policy_arns must be provided"
-  }  
+  default     = [] 
 }
 
 variable "sub" {
