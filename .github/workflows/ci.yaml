@@ -10,31 +10,20 @@ jobs:
   validate:
     name: Validate
     runs-on: ubuntu-latest
-    outputs:
-      module-paths: ${{ steps.find-modules.outputs.paths }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Find
-        id: find-modules
-        run: |
-          # find directories containing *.tf files
-          dirs=$(find . -type f -name "*.tf" -exec dirname {} \; | sort -u)
-          echo "Found module dirs: $dirs"
-          # output as comma-separated for reuse
-          echo "paths=$(echo $dirs | tr ' ' ',')" >> $GITHUB_OUTPUT
-
-      - name: Setup
-        uses: hashicorp/setup-terraform@v3
+      - uses: terraform-linters/setup-tflint@v6
+        name: Setup
         with:
-          terraform_version: 1.13.0
+          tflint_version: v0.52.0
+          cache: true
 
-      - name: Validate
-        working-directory: ${{ matrix.module-path }}
-        run: |
-          for dir in $(echo "${{ steps.find-modules.outputs.paths }}" | tr ',' ' '); do
-            echo "Validating $dir"
-            terraform -chdir="$dir" init -backend=false
-            terraform -chdir="$dir" validate -no-color
-          done
+      - name: init
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: lint
+        run: tflint -f compact
