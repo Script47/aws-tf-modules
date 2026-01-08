@@ -22,9 +22,16 @@ variable "policy_arns" {
   default     = [] 
 }
 
+variable "repo_owners" {
+  type        = set(string)
+  description = "Set of repo owners for the assume role policy"
+  default     = []
+}
+
 variable "sub" {
-  type        = string
+  type        = set(string)
   description = "The sub pattern for the assume role policy (e.g. org/repo:ref:refs/heads/master)"
+  default     = []
 }
 
 variable "tags" {

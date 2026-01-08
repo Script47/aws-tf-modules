@@ -16,13 +16,27 @@ data "aws_iam_policy_document" "assume_role_policy" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:aud"
-      values = ["sts.amazonaws.com"]
+      values   = ["sts.amazonaws.com"]
     }
 
-    condition {
-      test     = "StringLike"
-      variable = "token.actions.githubusercontent.com:sub"
-      values = ["repo:${var.sub}"]
+    dynamic "condition" {
+      for_each = length(var.repo_owners) > 0 ? [1] : [] 
+
+      content {
+        test     = "StringEquals"
+        variable = "token.actions.githubusercontent.com:repository_owner"
+        values   = var.repo_owners
+      }
+    }
+
+    dynamic "condition" {
+      for_each = length(var.sub) > 0 ? [1] : [] 
+
+      content {
+        test     = "StringLike"
+        variable = "token.actions.githubusercontent.com:sub"
+        values   = var.sub
+      }
     }
   }
 }
