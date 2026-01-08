@@ -44,6 +44,14 @@ module "oidc_github_iam_role" {
     "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
   ]
 
+  repo_owners = [
+    "my-owner"
+  ]
+
+  sub = [
+    "repo:my-owner/my-repo:ref:refs/heads/*"
+  ]
+
   tags = {
     Project     = "my-project"
     Service     = "my-service"
