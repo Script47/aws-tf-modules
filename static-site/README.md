@@ -36,7 +36,7 @@ module "static_site" {
   tags = {
     Project     = "my-project"
     Service     = "my-service"
-    Environment = "produdction"
+    Environment = "production"
   }
 
   providers = {
