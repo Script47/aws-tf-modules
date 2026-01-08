@@ -1,4 +1,4 @@
-# OIDC GitHub IAM Role
+# GitHub OIDC IAM Role
 
 ## About
 
