@@ -29,5 +29,5 @@ jobs:
         run: |
           for dir in $(find . -type f -name "*.tf" -exec dirname {} \; | sort -u); do
             echo "Linting $dir"
-            tflint -f compact "$dir"
+            tflint --chdir "$dir" -f compact
           done
