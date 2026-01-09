@@ -14,7 +14,7 @@ See `variables.tf` for the full argument reference.
 
 ```hcl
 module "oidc_github_iam_role" {
-  source      = "github.com/script47/aws-tf-modules/oidc-github-iam-role"
+  source      = "github.com/script47/aws-tf-modules/github-oidc-iam-role"
 
   role_name   = "my-role"
 
@@ -44,12 +44,8 @@ module "oidc_github_iam_role" {
     "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
   ]
 
-  repo_owners = [
-    "my-owner"
-  ]
-
   sub = [
-    "repo:my-owner/my-repo:ref:refs/heads/*"
+    "repo:my-owner/my-repo:ref:*"
   ]
 
   tags = {
