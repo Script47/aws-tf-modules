@@ -10,7 +10,7 @@ See `variables.tf` for the full argument reference.
 
 ```hcl
 module "oidc_github_provider" {
-  source      = "github.com/script47/aws-tf-modules/oidc-github-provider"
+  source      = "github.com/script47/aws-tf-modules/github-oidc-provider"
 
   thumbprints = []
 
