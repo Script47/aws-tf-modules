@@ -1,13 +1,13 @@
-output "bucket_name" {
-  value = aws_s3_bucket.static_site.bucket
-}
-
-output "deploy_role_arn" {
-  value = aws_iam_role.deploy_static_site.arn
+output "bucket" {
+  value = {
+    arn = aws_s3_bucket.static_site.arn
+    id  = aws_s3_bucket.static_site.id
+  }
 }
 
 output "cloudfront" {
   value = {
+    arn         = aws_cloudfront_distribution.static_site.arn
     id          = aws_cloudfront_distribution.static_site.id
     domain_name = aws_cloudfront_distribution.static_site.domain_name
     aliases     = aws_cloudfront_distribution.static_site.aliases

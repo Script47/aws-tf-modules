@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize', 'ready_for_review']
+    paths:
+      - '**/*.tf'
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - uses: terraform-linters/setup-tflint@v6
+        name: Setup
+        with:
+          tflint_version: v0.52.0
+          cache: true
+
+      - name: init
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: lint
+        run: |
+          for dir in $(find . -type f -name "*.tf" -exec dirname {} \; | sort -u); do
+            echo "Linting $dir"
+            tflint --chdir "$dir" -f compact
+          done
