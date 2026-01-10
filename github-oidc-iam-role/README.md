@@ -1,7 +1,5 @@
 # GitHub OIDC IAM Role
 
-## About
-
 This module allows you to setup an IAM role for GitHub OIDC.
 
 - IAM role with trust policy with `sub` pattern restrictions

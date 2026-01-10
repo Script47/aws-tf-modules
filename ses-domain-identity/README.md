@@ -1,7 +1,5 @@
 # SES Domain Identity
 
-## About
-
 This module allows you to setup domain identification for SES with the following features:
 
 - Domain verification

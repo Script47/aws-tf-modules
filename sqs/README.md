@@ -1,7 +1,5 @@
 # SQS
 
-## About
-
 This module allows you to setup an SQS queue:
 
 - Server-side encryption enabled by default (AWS-SSE)

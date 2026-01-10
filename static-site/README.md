@@ -1,7 +1,5 @@
 # Static Site
 
-## About
-
 This module allows you to setup a static site with the following features:
 
 - S3 bucket for static content (secure, private access only via CloudFront OAC)
