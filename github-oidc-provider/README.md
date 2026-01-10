@@ -1,7 +1,5 @@
 # GitHub OIDC Provider
 
-## About
-
 This module allows you to setup the provider for GitHub OIDC.
 
 ## Usage

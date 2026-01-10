@@ -1,7 +1,5 @@
 # Lambda Layer
 
-## About
-
 This module allows you to setup a Lambda layer.
 
 ## Usage

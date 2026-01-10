@@ -1,7 +1,5 @@
 # Lambda Function
 
-## About
-
 This module allows you to setup a Lambda function.
 
 ## Usage

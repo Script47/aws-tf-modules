@@ -1,7 +1,5 @@
 # Guardrails
 
-## About
-
 This module allows you to setup default guardrails to harden your AWS account with the following features:
 
 - EBS encryption by default
