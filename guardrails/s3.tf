@@ -1,5 +1,5 @@
 resource "aws_s3_account_public_access_block" "this" {
-  count = var.s3.public_access_block.enabled
+  count = var.s3.public_access_block.enabled ? 1 : 0
 
   block_public_acls       = var.s3.public_access_block.block_public_acls
   block_public_policy     = var.s3.public_access_block.block_public_policy
