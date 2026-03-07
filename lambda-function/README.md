@@ -7,7 +7,7 @@ This module allows you to setup a Lambda function.
 See `variables.tf` for the full argument reference.
 
 ```hcl
-module "static_site" {
+module "lambda_fn" {
   source = "github.com/script47/aws-tf-modules/lambda-function"
 
   name        = "my-lambda-func"
