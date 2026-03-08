@@ -1,6 +1,7 @@
 output "fn" {
   value = {
     arn        = aws_lambda_function.fn.arn
+    name       = aws_lambda_function.fn.function_name
     invoke_arn = aws_lambda_function.fn.invoke_arn
   }
 }
