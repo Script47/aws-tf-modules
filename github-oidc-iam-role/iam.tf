@@ -7,9 +7,9 @@ resource "aws_iam_role" "role" {
 resource "aws_iam_role_policy" "policy" {
   count = var.policy != null ? 1 : 0
 
-  name     = var.policy_name
-  role     = aws_iam_role.role.id
-  policy   = var.policy
+  name   = var.policy_name
+  role   = aws_iam_role.role.id
+  policy = var.policy
 }
 
 resource "aws_iam_role_policy_attachment" "policies" {

@@ -19,7 +19,7 @@ variable "policy" {
 variable "policy_arns" {
   type        = set(string)
   description = "Set of IAM policy ARNs to attach to the role"
-  default     = [] 
+  default     = []
 }
 
 variable "sub" {

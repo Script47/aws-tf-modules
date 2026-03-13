@@ -19,7 +19,7 @@ resource "aws_lambda_function" "fn" {
 
   dynamic "logging_config" {
     for_each = var.logs.enabled ? [1] : []
-    
+
     content {
       log_group             = aws_cloudwatch_log_group.logs[0].name
       log_format            = "JSON"
@@ -50,8 +50,8 @@ resource "aws_lambda_function_event_invoke_config" "invoke_config" {
 
   dynamic "destination_config" {
     for_each = (
-    var.async_invoke_config.success_destination_arn != null ||
-    var.async_invoke_config.failure_destination_arn != null
+      var.async_invoke_config.success_destination_arn != null ||
+      var.async_invoke_config.failure_destination_arn != null
     ) ? [1] : []
 
     content {

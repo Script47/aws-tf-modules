@@ -7,8 +7,8 @@ resource "aws_iam_account_password_policy" "this" {
   max_password_age               = var.iam.password_policy.max_password_age
   minimum_password_length        = var.iam.password_policy.minimum_password_length
 
-  require_lowercase_characters   = var.iam.password_policy.require_lowercase_characters
-  require_uppercase_characters   = var.iam.password_policy.require_uppercase_characters
-  require_numbers                = var.iam.password_policy.require_numbers
-  require_symbols                = var.iam.password_policy.require_symbols
+  require_lowercase_characters = var.iam.password_policy.require_lowercase_characters
+  require_uppercase_characters = var.iam.password_policy.require_uppercase_characters
+  require_numbers              = var.iam.password_policy.require_numbers
+  require_symbols              = var.iam.password_policy.require_symbols
 }

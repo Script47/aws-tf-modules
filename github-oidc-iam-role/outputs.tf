@@ -8,7 +8,7 @@ output "role" {
 
 output "policy" {
   value = length(aws_iam_role_policy.policy) > 0 ? {
-    id  =  aws_iam_role_policy.policy[0].id
+    id   = aws_iam_role_policy.policy[0].id
     name = aws_iam_role_policy.policy[0].name
   } : null
 }
