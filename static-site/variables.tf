@@ -46,3 +46,9 @@ variable "tags" {
   type        = map(string)
   description = "The tags to apply to all resources created"
 }
+
+variable "bucket_prefix" {
+  type        = string
+  description = "Optional prefix inside the S3 bucket for static site files"
+  default     = ""
+}

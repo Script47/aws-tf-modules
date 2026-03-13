@@ -10,14 +10,14 @@ variable "description" {
 }
 
 variable "runtimes" {
-  type = list(string)
-  default = ["nodejs24.x"]
+  type        = list(string)
+  default     = ["nodejs24.x"]
   description = "The compatible runtimes"
 }
 
 variable "architectures" {
-  type = list(string)
-  default = ["arm64"]
+  type        = list(string)
+  default     = ["arm64"]
   description = "The compatible architectures"
 }
 
