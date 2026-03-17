@@ -27,7 +27,7 @@ resource "aws_cloudfront_distribution" "static_site" {
     origin_id                = local.origin_id
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
     domain_name              = aws_s3_bucket.static_site.bucket_regional_domain_name
-    origin_path              = var.bucket_prefix != "" ? "/${var.bucket_prefix}" : ""
+    origin_path              = var.origin_path != "" ? "/${var.origin_path}" : ""
   }
 
   default_cache_behavior {
