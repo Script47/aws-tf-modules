@@ -16,19 +16,27 @@ See `variables.tf` for the full argument reference.
 
 ```hcl
 module "static_site" {
-  source      = "github.com/script47/aws-tf-modules/static-site"
+  source = "github.com/script47/aws-tf-modules/static-site"
 
   bucket_name = "example.org"
   hosted_zone = "my-hosted-zone"
-  domains     = ["example.org"]
+  domains = ["example.org"]
 
   geo_restriction = {
-    type      = "none"
+    type = "none"
     locations = []
   }
 
   viewer_certificate = {
     minimum_protocol_version = "TLSv1.2_2025"
+  }
+
+  cors_config = {
+    access_control_allow_credentials = false
+    access_control_allow_headers     = ["*"]
+    access_control_allow_methods     = ["GET", "HEAD", "OPTIONS"]
+    access_control_allow_origins     = ["*"]
+    origin_override                  = true
   }
 
   tags = {

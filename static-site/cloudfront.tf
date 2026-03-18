@@ -79,6 +79,24 @@ resource "aws_cloudfront_response_headers_policy" "cloudfront" {
   name    = "cf-resp-hdrs-${local.primary_domain_normalised}"
   comment = "Response headers policy for ${local.primary_domain}"
 
+  cors_config {
+    access_control_allow_credentials = var.cors_config.access_control_allow_credentials
+
+    access_control_allow_headers {
+      items = var.cors_config.access_control_allow_headers
+    }
+
+    access_control_allow_methods {
+      items = var.cors_config.access_control_allow_methods
+    }
+
+    access_control_allow_origins {
+      items = var.cors_config.access_control_allow_origins
+    }
+
+    origin_override = var.cors_config.origin_override
+  }
+
   security_headers_config {
     content_type_options {
       override = true

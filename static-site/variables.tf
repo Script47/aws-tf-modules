@@ -42,6 +42,18 @@ variable "viewer_certificate" {
   description = "Viewer certificate configuration for the CloudFront distribution"
 }
 
+variable "cors_config" {
+  description = "Optional CORS configuration for CloudFront response headers policy"
+  type = object({
+    access_control_allow_credentials = optional(bool, false)
+    access_control_allow_headers     = optional(list(string), ["*"])
+    access_control_allow_methods     = optional(list(string), ["GET", "HEAD", "OPTIONS"])
+    access_control_allow_origins     = optional(list(string), ["*"])
+    origin_override                  = optional(bool, true)
+  })
+  default = {}
+}
+
 variable "tags" {
   type        = map(string)
   description = "The tags to apply to all resources created"
