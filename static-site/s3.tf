@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "static_site" {
-  count = var.existing_bucket_name == "" ? 1 : 0
+  count = var.create_bucket ? 1 : 0
 
   bucket        = local.bucket_name
   force_destroy = true
@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "static_site" {
 }
 
 resource "aws_s3_bucket_public_access_block" "static_site" {
-  bucket                  = var.existing_bucket_name != "" ? var.existing_bucket_name : aws_s3_bucket.static_site[0].id
+  bucket                  = var.bucket_name != "" ? var.bucket_name : aws_s3_bucket.static_site[0].id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -17,7 +17,7 @@ resource "aws_s3_bucket_public_access_block" "static_site" {
 }
 
 resource "aws_s3_bucket_policy" "static_site" {
-  bucket   = var.existing_bucket_name != "" ? var.existing_bucket_name : aws_s3_bucket.static_site[0].bucket
+  bucket   = var.bucket_name != "" ? var.bucket_name : aws_s3_bucket.static_site[0].bucket
   policy   = data.aws_iam_policy_document.cloudfront_to_s3.json
   provider = aws.default
 }

@@ -1,6 +1,6 @@
 variable "bucket_name" {
   type        = string
-  description = "The name of the bucket that will store your static site files. If omitted the bucket name will match the domain name"
+  description = "The name of the S3 bucket. If create_bucket is false, this must refer to an existing bucket. If omitted, the bucket name will match the domain name"
   default     = ""
 }
 
@@ -65,8 +65,8 @@ variable "origin_path" {
   default     = ""
 }
 
-variable "existing_bucket_name" {
-  description = "Use an existing S3 bucket instead of creating a new one"
-  type = string
-  default = ""
+variable "create_bucket" {
+  description = "Whether to create a new S3 bucket or use an existing one"
+  type        = bool
+  default     = true
 }
