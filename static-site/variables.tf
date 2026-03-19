@@ -64,3 +64,9 @@ variable "origin_path" {
   description = "Optional prefix inside the S3 bucket for static site files"
   default     = ""
 }
+
+variable "existing_bucket_name" {
+  description = "Use an existing S3 bucket instead of creating a new one"
+  type = string
+  default = ""
+}
