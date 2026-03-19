@@ -24,3 +24,11 @@ resource "aws_iam_role_policy_attachment" "multiple" {
   role       = local.role_name
   policy_arn = each.value
 }
+
+resource "aws_iam_role_policy" "this" {
+  for_each = var.inline_policies
+
+  role   = local.role_name
+  name   = each.key
+  policy = jsonencode(each.value)
+}

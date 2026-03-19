@@ -2,7 +2,7 @@ locals {
   log_group_name = "/aws/lambda/${var.name}"
 }
 
-resource "aws_cloudwatch_log_group" "logs" {
+resource "aws_cloudwatch_log_group" "this" {
   count = var.logs.enabled ? 1 : 0
 
   name              = local.log_group_name

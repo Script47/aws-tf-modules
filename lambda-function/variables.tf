@@ -21,6 +21,12 @@ variable "policy_arns" {
   default     = []
 }
 
+variable "inline_policies" {
+  type        = map(any)
+  description = "Map of inline IAM policy documents"
+  default     = {}
+}
+
 variable "layer_arns" {
   type        = list(string)
   default     = []
@@ -76,9 +82,10 @@ variable "handler" {
 variable "logs" {
   type = object({
     enabled           = optional(bool, true)
-    app_log_level     = optional(string, "INFO") # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
-    system_log_level  = optional(string, "INFO") # DEBUG, INFO, WARN
+    format            = optional(string, "Text") # Text, JSON
     retention_in_days = optional(number, 30)
+    app_log_level     = optional(string, null) # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+    system_log_level  = optional(string, null) # DEBUG, INFO, WARN
   })
   default = {}
 }
