@@ -7,7 +7,7 @@ This module allows you to setup a Lambda function.
 See `variables.tf` for the full argument reference.
 
 ```hcl
-module "lambda_fn" {
+module "fn" {
   source = "github.com/script47/aws-tf-modules/lambda-function"
 
   name        = "my-lambda-func"
@@ -17,6 +17,18 @@ module "lambda_fn" {
   policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
   ]
+  inline_policies = {
+    s3_access = {
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = ["s3:GetObject"]
+          Effect   = "Allow"
+          Resource = "arn:aws:s3:::my-bucket/*"
+        }
+      ]
+    }
+  }
   layer_arns = [
     "arn:aws:lambda:us-east-1:xxxxxxxxxxxx:layer:layer-name:1"
   ]
@@ -33,29 +45,6 @@ module "lambda_fn" {
 
   src = abspath("${path.module}/../dist")
   handler = "index.handler"
-
-  logs = {
-    enabled           = true
-    app_log_level     = "INFO"
-    system_log_level  = "INFO"
-    retention_in_days = 30
-  }
-
-  permissions = {
-    apigw = {
-      action     = "lambda:InvokeFunction"
-      principal  = "apigateway.amazonaws.com"
-      source_arn = ""
-    }
-  }
-
-  async_invoke_config = {
-    enabled                 = true
-    max_retries             = 2
-    max_event_age           = 3600
-    failure_destination_arn = ""
-    success_destination_arn = ""
-  }
 
   tags = {
     Project     = "my-project"
