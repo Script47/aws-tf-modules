@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
     principals {
-      type = "Federated"
+      type        = "Federated"
       identifiers = [data.aws_iam_openid_connect_provider.github.arn]
     }
 
@@ -19,9 +19,9 @@ data "aws_iam_policy_document" "assume_role_policy" {
     }
 
     condition {
-        test     = "StringLike"
-        variable = "token.actions.githubusercontent.com:sub"
-        values   = var.sub      
+      test     = "StringLike"
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = var.sub
     }
   }
 }

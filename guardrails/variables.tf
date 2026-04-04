@@ -14,7 +14,7 @@ variable "s3" {
       block_public_acls       = optional(bool, true)
       block_public_policy     = optional(bool, true)
       ignore_public_acls      = optional(bool, true)
-      restrict_public_buckets = optional(bool, true)      
+      restrict_public_buckets = optional(bool, true)
     }), {})
   })
   default = {}
@@ -31,10 +31,10 @@ variable "iam" {
       max_password_age               = optional(number, null)
       minimum_password_length        = optional(number, 12)
 
-      require_lowercase_characters   = optional(bool, true)
-      require_uppercase_characters   = optional(bool, true)
-      require_numbers                = optional(bool, true)
-      require_symbols                = optional(bool, true)
+      require_lowercase_characters = optional(bool, true)
+      require_uppercase_characters = optional(bool, true)
+      require_numbers              = optional(bool, true)
+      require_symbols              = optional(bool, true)
     }), {})
   })
   default = {}

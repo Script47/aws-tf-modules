@@ -1,6 +1,6 @@
 variable "bucket_name" {
   type        = string
-  description = "The name of the bucket that will store your static site files. If omitted the bucket name will match the domain name"
+  description = "The name of the S3 bucket. If create_bucket is false, this must refer to an existing bucket. If omitted, the bucket name will match the domain name"
   default     = ""
 }
 
@@ -57,4 +57,16 @@ variable "cors_config" {
 variable "tags" {
   type        = map(string)
   description = "The tags to apply to all resources created"
+}
+
+variable "origin_path" {
+  type        = string
+  description = "Optional prefix inside the S3 bucket for static site files"
+  default     = ""
+}
+
+variable "create_bucket" {
+  description = "Whether to create a new S3 bucket or use an existing one"
+  type        = bool
+  default     = true
 }
