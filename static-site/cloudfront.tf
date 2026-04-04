@@ -1,5 +1,9 @@
 locals {
-  origin_id = "S3-${aws_s3_bucket.static_site.bucket}"
+  origin_id                   = "S3-${local.bucket_name}"
+  origin_path                 = var.origin_path == "" ? "" : var.origin_path
+  bucket_regional_domain_name = var.create_bucket ? aws_s3_bucket.static_site[0].bucket_regional_domain_name : data.aws_s3_bucket.user_created[0].bucket_regional_domain_name
+  oac_name                    = replace("${local.bucket_name}-${replace(local.origin_path, "/", "-")}", "/[^a-zA-Z0-9-]/", "")
+  rhp_name                    = local.primary_domain_normalised
 }
 
 resource "aws_cloudfront_distribution" "static_site" {
@@ -26,8 +30,8 @@ resource "aws_cloudfront_distribution" "static_site" {
   origin {
     origin_id                = local.origin_id
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
-    domain_name              = aws_s3_bucket.static_site.bucket_regional_domain_name
-    origin_path              = var.origin_path != "" ? "/${var.origin_path}" : ""
+    domain_name              = local.bucket_regional_domain_name
+    origin_path              = local.origin_path
   }
 
   default_cache_behavior {
@@ -68,8 +72,8 @@ resource "aws_cloudfront_distribution" "static_site" {
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {
-  name                              = "oac-for-${aws_s3_bucket.static_site.bucket}"
-  description                       = "OAC for ${aws_s3_bucket.static_site.bucket}"
+  name                              = local.oac_name
+  description                       = "OAC for ${local.bucket_name}"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
@@ -77,7 +81,7 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 }
 
 resource "aws_cloudfront_response_headers_policy" "cloudfront" {
-  name    = "cf-resp-hdrs-${local.primary_domain_normalised}"
+  name    = local.rhp_name
   comment = "Response headers policy for ${local.primary_domain}"
 
   cors_config {

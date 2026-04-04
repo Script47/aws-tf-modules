@@ -1,3 +1,7 @@
+locals {
+  custom_prefix = startswith(local.origin_path, "/") ? substr(local.origin_path, 1, length(local.origin_path)) : local.origin_path
+  bucket_prefix = local.origin_path == "" ? "*" : "${local.custom_prefix}/*"
+}
 data "aws_caller_identity" "current" {}
 
 data "aws_route53_zone" "hosted_zone" {
@@ -6,11 +10,16 @@ data "aws_route53_zone" "hosted_zone" {
   private_zone = false
 }
 
+data "aws_s3_bucket" "user_created" {
+  count  = !var.create_bucket ? 1 : 0
+  bucket = var.bucket_name
+}
+
 data "aws_iam_policy_document" "cloudfront_to_s3" {
   statement {
     sid       = "AllowCloudFrontToAccessBucket"
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.static_site.arn}/*"]
+    resources = ["${local.bucket_arn}/${local.bucket_prefix}"]
 
     principals {
       type        = "Service"

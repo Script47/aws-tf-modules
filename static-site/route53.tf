@@ -9,20 +9,23 @@ resource "aws_route53_zone" "hosted_zone" {
 #############################################
 resource "aws_route53_record" "acm_records" {
   for_each = {
-    for dvo in aws_acm_certificate.cloudfront_cert.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.cloudfront_cert.domain_validation_options :
+    dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
     }
   }
 
-  zone_id         = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id : data.aws_route53_zone.hosted_zone[0].zone_id
-  type            = each.value.type
-  name            = each.value.name
-  records         = [each.value.record]
-  ttl             = 60
+  zone_id = try(aws_route53_zone.hosted_zone[0].zone_id, data.aws_route53_zone.hosted_zone[0].zone_id)
+  type    = each.value.type
+  name    = each.value.name
+  records = [each.value.record]
+  ttl     = 60
+
   allow_overwrite = true
-  provider        = aws.default
+
+  provider = aws.default
 }
 
 #############################################
@@ -31,7 +34,7 @@ resource "aws_route53_record" "acm_records" {
 resource "aws_route53_record" "static_site_a_record" {
   count = length(local.domains)
 
-  zone_id = local.create_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id : data.aws_route53_zone.hosted_zone[0].zone_id
+  zone_id = try(aws_route53_zone.hosted_zone[0].zone_id, data.aws_route53_zone.hosted_zone[0].zone_id)
   type    = "A"
   name    = local.domains[count.index]
 
@@ -40,6 +43,8 @@ resource "aws_route53_record" "static_site_a_record" {
     zone_id                = aws_cloudfront_distribution.static_site.hosted_zone_id
     evaluate_target_health = false
   }
+
+  allow_overwrite = true
 
   provider = aws.default
 }
