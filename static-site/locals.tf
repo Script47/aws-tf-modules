@@ -12,3 +12,7 @@ locals {
   bucket_name = var.bucket_name == "" ? local.primary_domain : var.bucket_name
   bucket_arn  = var.create_bucket ? aws_s3_bucket.static_site[0].arn : data.aws_s3_bucket.user_created[0].arn
 }
+
+output "internal_domains" {
+  value = local.internal_domains
+}
