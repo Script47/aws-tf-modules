@@ -1,5 +1,5 @@
 locals {
-  origin_id                   = "S3-${local.bucket_name}"
+  origin_id                   = "s3-static-site"
   origin_path                 = var.origin_path == "" ? "" : var.origin_path
   bucket_regional_domain_name = var.create_bucket ? aws_s3_bucket.static_site[0].bucket_regional_domain_name : data.aws_s3_bucket.user_created[0].bucket_regional_domain_name
   oac_name                    = replace("${local.bucket_name}-${replace(local.origin_path, "/", "-")}", "/[^a-zA-Z0-9-]/", "")
