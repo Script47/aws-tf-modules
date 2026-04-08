@@ -2,11 +2,11 @@ locals {
   origin_id                   = "s3-static-site"
   origin_path                 = var.origin_path == "" ? "" : var.origin_path
   bucket_regional_domain_name = var.create_bucket ? aws_s3_bucket.this[0].bucket_regional_domain_name : data.aws_s3_bucket.user_created[0].bucket_regional_domain_name
-  oac_name = "${replace(
+  oac_name = replace(
     replace("${local.bucket_name}-${replace(local.origin_path, "/", "-")}-oac", "--", "-"),
     "/[^a-zA-Z0-9.-]/",
     ""
-  )}-oac"
+  )
   rhp_name = "${local.primary_domain_normalised}-cf-rhp"
 }
 
