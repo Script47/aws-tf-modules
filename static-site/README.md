@@ -1,7 +1,5 @@
 # Static Site
 
-## About
-
 This module allows you to setup a static site with the following features:
 
 - S3 bucket for static content (secure, private access only via CloudFront OAC)
@@ -18,14 +16,14 @@ See `variables.tf` for the full argument reference.
 
 ```hcl
 module "static_site" {
-  source      = "github.com/script47/aws-tf-modules/static-site"
+  source = "github.com/script47/aws-tf-modules/static-site"
 
   bucket_name = "example.org"
   hosted_zone = "my-hosted-zone"
-  domains     = ["example.org"]
+  domains = ["example.org"]
 
   geo_restriction = {
-    type      = "none"
+    type = "none"
     locations = []
   }
 
@@ -33,10 +31,18 @@ module "static_site" {
     minimum_protocol_version = "TLSv1.2_2025"
   }
 
+  cors_config = {
+    access_control_allow_credentials = false
+    access_control_allow_headers     = ["*"]
+    access_control_allow_methods     = ["GET", "HEAD", "OPTIONS"]
+    access_control_allow_origins     = ["*"]
+    origin_override                  = true
+  }
+
   tags = {
     Project     = "my-project"
     Service     = "my-service"
-    Environment = "produdction"
+    Environment = "production"
   }
 
   providers = {

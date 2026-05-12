@@ -1,7 +1,5 @@
 # SQS
 
-## About
-
 This module allows you to setup an SQS queue:
 
 - Server-side encryption enabled by default (AWS-SSE)
@@ -38,7 +36,7 @@ module "my_queue" {
   tags = {
     Project     = "my-project"
     Service     = "my-service"
-    Environment = "produdction"
+    Environment = "production"
   }
 }
 ```
@@ -46,7 +44,7 @@ module "my_queue" {
 ## Outputs
 
 | Name   | Description                                                                           |
-|--------|---------------------------------------------------------------------------------------|
+| ------ | ------------------------------------------------------------------------------------- |
 | `arn`  | ARN of the primary SQS queue                                                          |
 | `name` | Name of the primary SQS queue                                                         |
 | `url`  | URL of the primary SQS queue                                                          |
@@ -54,7 +52,7 @@ module "my_queue" {
 
 ## Resources
 
-| Resources                      | 
-|--------------------------------|
+| Resources                      |
+| ------------------------------ |
 | `aws_sqs_queue`                |
 | `aws_sqs_queue_redrive_policy` |

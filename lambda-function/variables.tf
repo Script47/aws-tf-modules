@@ -11,7 +11,26 @@ variable "description" {
 
 variable "role_arn" {
   type        = string
-  description = "ARN of the role assumed by the function"
+  description = "ARN of the role assumed by the function. If unspecified a role will be created"
+  default     = null
+}
+
+variable "policy_arns" {
+  type        = list(string)
+  description = "Option list of policy ARNs to attach to the execution role"
+  default     = []
+}
+
+variable "inline_policies" {
+  type        = map(any)
+  description = "Map of inline IAM policy documents"
+  default     = {}
+}
+
+variable "layer_arns" {
+  type        = list(string)
+  default     = []
+  description = "ARN of layers"
 }
 
 variable "runtime" {
@@ -21,7 +40,7 @@ variable "runtime" {
 }
 
 variable "architectures" {
-  type        = list(string)
+  type        = set(string)
   default     = ["arm64"]
   description = "A list of the supported architectures"
 }
@@ -44,17 +63,6 @@ variable "concurrency" {
   description = "Set the maximum execution concurrency"
 }
 
-variable "layer_arns" {
-  type        = list(string)
-  default     = []
-  description = "ARN of layers"
-}
-
-variable "handler" {
-  type        = string
-  description = "The function's entrypoint"
-}
-
 variable "vars" {
   type        = map(string)
   default     = {}
@@ -66,21 +74,18 @@ variable "src" {
   description = "The path to your function code"
 }
 
-variable "logs" {
-  type = object({
-    app_log_level     = optional(string, "INFO") # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
-    system_log_level  = optional(string, "INFO") # DEBUG, INFO, WARN
-    retention_in_days = optional(number, 30)
-  })
-  default = {}
+variable "handler" {
+  type        = string
+  description = "The function's entrypoint"
 }
 
-variable "async_invoke_config" {
+variable "logs" {
   type = object({
-    max_retries             = optional(number, 2)
-    max_event_age           = optional(number, 3600) # 1 hour
-    failure_destination_arn = optional(string, null)
-    success_destination_arn = optional(string, null)
+    enabled           = optional(bool, true)
+    format            = optional(string, "Text") # Text, JSON
+    retention_in_days = optional(number, 30)
+    app_log_level     = optional(string, null) # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+    system_log_level  = optional(string, null) # DEBUG, INFO, WARN
   })
   default = {}
 }
@@ -91,6 +96,17 @@ variable "permissions" {
     principal  = string
     source_arn = optional(string, null)
   }))
+  default = {}
+}
+
+variable "async_invoke_config" {
+  type = object({
+    enabled                 = optional(bool, false)
+    max_retries             = optional(number, 2)
+    max_event_age           = optional(number, 3600) # 1 hour
+    failure_destination_arn = optional(string, null)
+    success_destination_arn = optional(string, null)
+  })
   default = {}
 }
 
