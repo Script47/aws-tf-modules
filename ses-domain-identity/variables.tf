@@ -2,6 +2,17 @@ variable "zone_id" {
   type        = string
   description = "The ID of the hosted zone"
   default     = null
+
+  validation {
+    condition     = !var.manage_dns_records || var.zone_id != null
+    error_message = "zone_id must be provided when manage_dns_records is true."
+  }
+}
+
+variable "manage_dns_records" {
+  type        = bool
+  description = "Whether to create Route53 DNS records in the provided zone. Set to false to create the SES domain identity without managing DNS."
+  default     = true
 }
 
 variable "domain" {

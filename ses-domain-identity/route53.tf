@@ -1,5 +1,5 @@
 locals {
-  configure_dns = var.zone_id != null
+  configure_dns = var.manage_dns_records
   spf_record = join(
     " ",
     concat(
