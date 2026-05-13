@@ -3,6 +3,7 @@ module "fn" {
 
   name            = var.name
   description     = var.description
+  create_role     = var.create_role
   role_arn        = var.role_arn
   policy_arns     = var.policy_arns
   inline_policies = var.inline_policies

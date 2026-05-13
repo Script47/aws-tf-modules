@@ -9,6 +9,12 @@ variable "description" {
   description = "The function's description"
 }
 
+variable "create_role" {
+  type        = bool
+  default     = true
+  description = "Whether the module should create its own execution role. Forwards to the inner lambda-function module."
+}
+
 variable "role_arn" {
   type        = string
   description = "ARN of the role assumed by the function. If unspecified a role will be created"
