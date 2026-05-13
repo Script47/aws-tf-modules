@@ -9,10 +9,17 @@ variable "description" {
   description = "The function's description"
 }
 
+variable "create_role" {
+  type        = bool
+  default     = true
+  description = "Whether the module should create its own execution role. Set to false when passing a pre-created role via `role_arn` (e.g. shared roles consolidated at the consumer's root level)."
+}
+
+# `role_arn` already exists; tighten its description:
 variable "role_arn" {
   type        = string
-  description = "ARN of the role assumed by the function. If unspecified a role will be created"
   default     = null
+  description = "Pre-created IAM role ARN. Only read when `create_role = false`. The arn may be a not-yet-computed reference (e.g. `aws_iam_role.shared.arn`), the module reads it only inside the `count = 0` branch so plan-time evaluation works."
 }
 
 variable "policy_arns" {

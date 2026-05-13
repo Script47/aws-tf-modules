@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda" {
-  count = var.role_arn == null ? 1 : 0
+  count = var.create_role ? 1 : 0
 
   name = "${var.name}-role"
   assume_role_policy = jsonencode({
