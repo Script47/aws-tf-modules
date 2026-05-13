@@ -19,7 +19,7 @@ resource "aws_iam_role" "lambda" {
 }
 
 resource "aws_iam_role_policy_attachment" "multiple" {
-  for_each = var.create_role ? local.policy_arns : {}
+  for_each = var.create_role ? local.policy_arns : toset([])
   
   role       = local.role_name
   policy_arn = each.value
