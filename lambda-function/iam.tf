@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda" {
-  count = var.role_arn == null ? 1 : 0
+  count = var.create_role ? 1 : 0
 
   name = "${var.name}-role"
   assume_role_policy = jsonencode({
@@ -19,14 +19,14 @@ resource "aws_iam_role" "lambda" {
 }
 
 resource "aws_iam_role_policy_attachment" "multiple" {
-  for_each = local.policy_arns
-
+  for_each = var.create_role ? local.policy_arns : {}
+  
   role       = local.role_name
   policy_arn = each.value
 }
 
 resource "aws_iam_role_policy" "this" {
-  for_each = var.inline_policies
+  for_each = var.create_role ? var.inline_policies : {}
 
   role   = local.role_name
   name   = each.key
