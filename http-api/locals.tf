@@ -1,5 +1,5 @@
 locals {
-  lambda_uri_prefix = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions"
+  lambda_uri_prefix = "arn:aws:apigateway:${data.aws_region.current.region}:lambda:path/2015-03-31/functions"
 
   route_integration_uris = {
     for k, r in var.routes :
