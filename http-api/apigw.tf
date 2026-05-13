@@ -69,7 +69,7 @@ resource "aws_apigatewayv2_route" "this" {
 resource "aws_lambda_permission" "authorizer" {
   count = var.authorizer != null ? 1 : 0
 
-  statement_id  = "allow-apigw-authorizer"
+  statement_id  = "allow-${var.name}-apigw-authorizer"
   action        = "lambda:InvokeFunction"
   function_name = var.authorizer.function_arn
   principal     = "apigateway.amazonaws.com"
